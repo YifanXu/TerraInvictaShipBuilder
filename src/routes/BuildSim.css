@@ -1,0 +1,16 @@
+.BuildSim {
+  padding: 5px;
+}
+
+.buildBody {
+  width: 100%;
+}
+
+.shipDesigner {
+  width: 100%;
+}
+
+.tab-pane {
+  width: 100%;
+  height: 300px;
+}

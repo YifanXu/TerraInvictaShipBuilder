@@ -1,17 +1,74 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
+import "./index.css";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+import Root from './routes/Root'
+import dataLoader from './data/dataLoader'
+import Home from './routes/Home'
+import BuildSim from "./routes/BuildSim";
+import StatPage from './routes/stats/StatPage'
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root/>,
+    children: [
+      {
+        path: "",
+        element: <Home/>
+      },
+      {
+        path: "buildsim",
+        element: <BuildSim/>,
+        loader: dataLoader,
+      },
+      {
+        path: "stats/drives",
+        element: <StatPage for="drives"/>,
+        loader: dataLoader,
+      },
+      {
+        path: "stats/powerplants",
+        element: <StatPage for="powerplants"/>,
+        loader: dataLoader,
+      },
+      {
+        path: "stats/radiators",
+        element: <StatPage for="radiators"/>,
+        loader: dataLoader,
+      },
+      {
+        path: "stats/techs",
+        element: <StatPage for="techs"/>,
+        loader: dataLoader,
+      },
+      {
+        path: "stats/hulls",
+        element: <StatPage for="hulls"/>,
+        loader: dataLoader,
+      },
+      {
+        path: "stats/batteries",
+        element: <StatPage for="batteries"/>,
+        loader: dataLoader,
+      },
+      {
+        path: "stats/weapons",
+        element: <StatPage for="weapons"/>,
+        loader: dataLoader,
+      }
+    ]
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

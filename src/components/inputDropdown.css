@@ -1,0 +1,32 @@
+.inputDropdown {
+  position: relative;
+}
+
+.list-group {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  max-height: 30vh;
+  z-index: 1;
+  overflow-y: scroll;
+}
+
+.list-group-item {
+  padding: 0px;
+}
+
+.list-group-item > button {
+  border: none;
+  background-color: white;
+  padding: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+.list-group-item > button:hover {
+  background-color: var(--bs-gray-200);
+}
+
+.list-group-item > button.danger {
+  color: var(--bs-danger)
+}

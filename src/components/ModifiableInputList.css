@@ -1,0 +1,16 @@
+.capacityDisplayLabel {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.capacityDisplayLabel.danger {
+  color: var(--bs-danger)
+}
+
+.capacityDisplayLabel.success {
+  color: var(--bs-success)
+}
+
+.capacityDisplayLabel.warn {
+  color: var(--bs-warning)
+}

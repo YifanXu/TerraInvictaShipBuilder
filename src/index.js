@@ -15,7 +15,7 @@ import StatPage from './routes/stats/StatPage'
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/TerraInvictaShipBuilder/",
     element: <Root/>,
     children: [
       {

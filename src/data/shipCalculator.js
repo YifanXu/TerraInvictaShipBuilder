@@ -123,7 +123,7 @@ export default function calculateStatistics (data, shipDesign) {
 
 
   // Propulsion
-  result.general.cruiseAccel = loadout.drive.thrust_N / result.general.wetMass / 9.81
+  result.general.cruiseAccel = loadout.drive.thrust_N * loadout.driveCount / result.general.wetMass / 9.81
   result.general.combatAccel = result.general.cruiseAccel * loadout.drive.thrustCap
   result.general.cruiseDV = 2.3 * loadout.drive.EV_kps * Math.log10(result.general.wetMass / result.general.dryMass)
 
@@ -134,17 +134,29 @@ export default function calculateStatistics (data, shipDesign) {
     source: 'Total',
     unit: '',
     count: '',
-    total: crewSum
+    total: round(crewSum)
   })
 
   result.massTable.push({
     source: 'Total',
     unit: '',
     count: '',
-    total: massSum
+    total: round(massSum)
   })
 
   result.loadout = loadout
 
   return result
+}
+
+export function isDriveCompatible (requirement, powerplant) {
+  console.log(powerplant)
+  switch (requirement) {
+    case 'Any_General':
+      return powerplant.generalUse;
+    case 'Any_Magnetic_Confinement_Fusion':
+      return powerplant.powerPlantClass === 'Mirrored_Magnetic_Confinement_Fusion' || powerplant.powerPlantClass === 'Toroid_Magnetic_Confinement_Fusion';
+    default:
+      return powerplant.powerPlantClass === requirement
+  }
 }

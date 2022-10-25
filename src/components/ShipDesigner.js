@@ -1,8 +1,10 @@
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 import InputDropdown from './InputDropdown'
 import ModifiableInputList from './ModifiableInputList'
+import { isDriveCompatible } from '../data/shipCalculator'
 
 function ShipDesigner(props) {
   const currentShip = props.currentShip
@@ -11,6 +13,22 @@ function ShipDesigner(props) {
       ...currentShip,
       [attribute]: value
     })
+  }
+
+  const setBestReactor = () => {
+    const validType = props.data.drives[props.currentShip.drive].requiredPowerPlant
+    const filteredReactors = Object.values(props.data.powerplants).filter(p => isDriveCompatible(validType, p))
+
+    let bestReactor = ''
+    let bestSpecPower = Infinity
+    for (const reactor of filteredReactors) {
+      if (reactor.specificPower_tGW < bestSpecPower) {
+        bestReactor = reactor.friendlyName
+        bestSpecPower = reactor.specificPower_tGW
+      }
+    }
+
+    getAttributeHandler('powerPlant')(bestReactor)
   }
 
   return (
@@ -44,8 +62,11 @@ function ShipDesigner(props) {
         <hr/>
         <Form.Group className="row">
           <Form.Label className='col-md-3 col-12'>Power Plant</Form.Label>
-          <Col className="col-md-9 col-12">
-            <InputDropdown items={Object.keys(props.data.powerplants)} val={currentShip.powerPlant} handler={getAttributeHandler('powerPlant')}/>
+          <Col className="col-md-7 col-8" style={{'paddingRight': '0px'}}>
+            <InputDropdown items={Object.keys(props.data.powerplants)} val={currentShip.powerPlant} handler={getAttributeHandler('powerPlant')} warnItem={v => !isDriveCompatible(props.data.drives[props.currentShip.drive].requiredPowerPlant, props.data.powerplants[v])}/>
+          </Col>
+          <Col className="col-md-2 col-4" style={{'paddingLeft': '0px'}}>
+            <Button className="btn btn-secondary" style={{width: '100%'}} onClick={setBestReactor}>Best</Button>
           </Col>
         </Form.Group>
         <Form.Group className="row">

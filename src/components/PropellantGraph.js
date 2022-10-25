@@ -7,8 +7,8 @@ export default function PropellantGraph (props) {
     const wetMass = props.dryMass + i * 100
     data.push({
       count: i,
-      dv: 2.3 * props.ev * Math.log10(wetMass / props.dryMass),
-      accel: props.thrust
+      dv: Math.round(2.3 * props.ev * Math.log10(wetMass / props.dryMass) * 100) / 100,
+      accel: Math.round(thrustConstant / wetMass * 10000) / 10000
     })
   }
   console.log(thrustConstant)

@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/TIShipBuilder/static/css/main.7be62f2f.css",
+    "main.js": "/TIShipBuilder/static/js/main.3166324e.js",
+    "index.html": "/TIShipBuilder/index.html",
+    "main.7be62f2f.css.map": "/TIShipBuilder/static/css/main.7be62f2f.css.map",
+    "main.3166324e.js.map": "/TIShipBuilder/static/js/main.3166324e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7be62f2f.css",
+    "static/js/main.3166324e.js"
+  ]
+}

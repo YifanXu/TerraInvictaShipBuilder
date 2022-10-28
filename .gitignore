@@ -8,8 +8,14 @@
 # testing
 /coverage
 
-# production
-/build
+# Include production (this is the deployment branch duh)
+# /build 
+
+## Do not include non-production
+/public
+/src
+package-lock.json
+package.json
 
 # misc
 .DS_Store

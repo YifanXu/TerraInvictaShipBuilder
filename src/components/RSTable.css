@@ -1,9 +1,0 @@
-thead > * > td {
-  font-weight: bold;
-}
-
-thead > tr {
-  position: sticky;
-  top: -10px;
-  background-color: white;
-}

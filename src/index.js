@@ -12,6 +12,7 @@ import dataLoader from './data/dataLoader'
 import Home from './routes/Home'
 import BuildSim from "./routes/BuildSim";
 import StatPage from './routes/stats/StatPage'
+import About from "./routes/About";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
       {
         path: "buildsim",
         element: <BuildSim/>,
+        loader: dataLoader,
+      },
+      {
+        path: "about",
+        element: <About/>,
         loader: dataLoader,
       },
       {
@@ -60,6 +66,11 @@ const router = createBrowserRouter([
       {
         path: "stats/weapons",
         element: <StatPage for="weapons"/>,
+        loader: dataLoader,
+      },
+      {
+        path: "stats/armor",
+        element: <StatPage for="armor"/>,
         loader: dataLoader,
       }
     ]

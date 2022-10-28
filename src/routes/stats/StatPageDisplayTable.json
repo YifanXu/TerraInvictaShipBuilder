@@ -214,5 +214,26 @@
       "Research Cost",
       "Total Crew count"
     ]
+  },
+  "armor": {
+    "title": "Armor Platings",
+    "columns": [
+      "friendlyName",
+      "heatofVaporization_MJkg",
+      "specialty", 
+      "sumCost"
+    ],
+    "columnDisplay": [
+      "Name",
+      "Armor Capacity",
+      "Specialty",
+      "Research Cost"
+    ],
+    "tooltips": [
+      "Name of the armor",
+      "Damage that 1 kg of the armor can absorb. The higher this value, the lighter each point of armor",
+      "Bonus resistance that the armor offers",
+      "Research Cost of the tech required and its pre-requisites"
+    ]
   }
 }

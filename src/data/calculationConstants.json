@@ -1,0 +1,11 @@
+{
+  "drivePowerRatio": 2000000,
+  "crewPower": 0.000005,
+  "crewWasteHeat": 0.0037,
+  "cruiseDVMutliplier": 2.3,
+  "thrustRatingInputScale": 0.001981,
+  "thrustRatingOutputScale": 1.445,
+  "evRatingInputScale": 0.9961,
+  "evRatingOutputScale": 1.443,
+  "g": 9.81
+}

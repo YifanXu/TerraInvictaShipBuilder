@@ -1,3 +1,5 @@
+import constants from './calculationConstants.json'
+
 function addEntryToDetailTable (table, source, unit, count) {
   let total = unit * count
 
@@ -33,7 +35,14 @@ export default function calculateStatistics (data, shipDesign) {
     radiator: data.radiators[shipDesign.radiator],
     battery: data.batteries[shipDesign.battery],
     noseWeapons: shipDesign.noseWeapons.map(w => data.weapons[w]),
-    hullWeapons: shipDesign.hullWeapons.map(w => data.weapons[w])
+    hullWeapons: shipDesign.hullWeapons.map(w => data.weapons[w]),
+    utilitySlots: shipDesign.utilitySlots.map(w => data.utility[w]),
+    frontArmor: data.armor[shipDesign.frontArmor],
+    sideArmor: data.armor[shipDesign.sideArmor],
+    tailArmor: data.armor[shipDesign.tailArmor],
+    frontArmorCount: shipDesign.frontArmorCount,
+    sideArmorCount: shipDesign.sideArmorCount,
+    tailArmorCount: shipDesign.tailArmorCount,
   }
 
   // Copied values
@@ -50,7 +59,7 @@ export default function calculateStatistics (data, shipDesign) {
     },
     power: {
       coolingType: loadout.drive.cooling,
-      drivePower: loadout.drive.cooling === 'Open' ? 0 : loadout.drive.thrust_N * loadout.driveCount * loadout.drive.EV_kps / 2000000,
+      drivePower: loadout.drive.cooling === 'Open' ? 0 : loadout.drive.thrust_N * loadout.driveCount * loadout.drive.EV_kps / constants.drivePowerRatio,
       crewPower: 0, // Crew * 0.000005 GW
       batteryPower: loadout.battery.rechargeRate_GJs, // Battery recharge rate
       powerOutput: 0, // MAX(drivePower, crewPower + batteryPower)
@@ -60,11 +69,7 @@ export default function calculateStatistics (data, shipDesign) {
       crewWasteHeat: 0, // Crew * 0.00375 GW
       wasteHeat: 0,
     },
-    crew: {
-      hull: loadout.hull.crew,
-      powerPlant: loadout.powerPlant.crew,
-      radiator: loadout.radiator.crew,
-    }
+    validation: []
   }
 
   // Figure out crew
@@ -86,13 +91,17 @@ export default function calculateStatistics (data, shipDesign) {
     crewSum += addEntryToDetailTable(crewTable, w.friendlyName, w.crew, 1)
   }
 
+  for (const util of loadout.utilitySlots) {
+    crewSum += addEntryToDetailTable(crewTable, util.friendlyName, util.crew, 1)
+  }
+
   result.general.crew = crewSum
 
   // Power
-  result.power.crewPower = crewSum * 0.000005
+  result.power.crewPower = crewSum * constants.crewPower
   result.power.powerOutput = Math.max(result.power.drivePower, result.power.crewPower + result.power.batteryPower)
   result.power.driveWasteHeat = result.power.powerOutput * (1 - result.power.powerPlantEfficency)
-  result.power.crewWasteHeat = crewSum * 0.00375;
+  result.power.crewWasteHeat = crewSum * constants.crewWasteHeat;
   result.power.wasteHeat = Math.max(result.power.driveWasteHeat, result.power.crewWasteHeat)
 
 
@@ -108,14 +117,21 @@ export default function calculateStatistics (data, shipDesign) {
   massSum += addEntryToDetailTable(massTable, 'Crew', 4, crewSum)
 
   for (const w of loadout.noseWeapons) {
-    console.log(w)
     massSum += addEntryToDetailTable(massTable, w.friendlyName, w.mass_tons, 1)
   }
 
   for (const w of loadout.hullWeapons) {
-    console.log(w)
     massSum += addEntryToDetailTable(massTable, w.friendlyName, w.mass_tons, 1)
   }
+
+  for (const util of loadout.utilitySlots) {
+    massSum += addEntryToDetailTable(massTable, util.friendlyName, util.mass_tons, 1)
+  }
+
+  // Armor
+  massSum += addEntryToDetailTable(massTable, `FRONT: ${loadout.frontArmor.friendlyName}`, Math.round(Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m * 10) / 10, loadout.frontArmorCount)
+  massSum += addEntryToDetailTable(massTable, `SIDE: ${loadout.sideArmor.friendlyName}`, Math.round(Math.PI * 2 / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.length_m * 10) / 10, loadout.sideArmorCount)
+  massSum += addEntryToDetailTable(massTable, `TAIL: ${loadout.tailArmor.friendlyName}`, Math.round(Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m * 10) / 10, loadout.tailArmorCount)
 
   result.general.dryMass = massSum;
   massSum += addEntryToDetailTable(massTable, 'Propellant', 100, loadout.propellantCount)
@@ -123,9 +139,9 @@ export default function calculateStatistics (data, shipDesign) {
 
 
   // Propulsion
-  result.general.cruiseAccel = loadout.drive.thrust_N * loadout.driveCount / result.general.wetMass / 9.81
+  result.general.cruiseAccel = loadout.drive.thrust_N * loadout.driveCount / result.general.wetMass / constants.g
   result.general.combatAccel = result.general.cruiseAccel * loadout.drive.thrustCap
-  result.general.cruiseDV = 2.3 * loadout.drive.EV_kps * Math.log10(result.general.wetMass / result.general.dryMass)
+  result.general.cruiseDV = constants.cruiseDVMutliplier * loadout.drive.EV_kps * Math.log10(result.general.wetMass / result.general.dryMass)
 
   result.crewTable = Object.values(crewTable)
   result.massTable = Object.values(massTable)
@@ -150,7 +166,6 @@ export default function calculateStatistics (data, shipDesign) {
 }
 
 export function isDriveCompatible (requirement, powerplant) {
-  console.log(powerplant)
   switch (requirement) {
     case 'Any_General':
       return powerplant.generalUse;

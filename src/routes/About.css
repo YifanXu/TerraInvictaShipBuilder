@@ -1,0 +1,8 @@
+.about {
+  padding: 5px;
+}
+
+.changelog {
+  height: fit-content;
+  overflow-y: visible;
+}

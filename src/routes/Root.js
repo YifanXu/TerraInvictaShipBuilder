@@ -24,11 +24,11 @@ function Root() {
                 <NavDropdown.Item href="/TerraInvictaShipBuilder/stats/hulls">Hulls</NavDropdown.Item>
                 <NavDropdown.Item href="/TerraInvictaShipBuilder/stats/batteries">Batteries</NavDropdown.Item>
                 <NavDropdown.Item href="/TerraInvictaShipBuilder/stats/weapons">Weapons</NavDropdown.Item>
+                <NavDropdown.Item href="/TerraInvictaShipBuilder/stats/armor">Armor</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#home">Drive Eval</Nav.Link>
-              <Nav.Link href="#home">Drive Optimizer</Nav.Link>
+              <Nav.Link href="/TerraInvictaShipBuilder/optimizer" disabled>Drive Optimizer</Nav.Link>
               <Nav.Link href="/TerraInvictaShipBuilder/buildsim">Build Sim</Nav.Link>
-              <Nav.Link href="#link">Drive Detail</Nav.Link>
+              <Nav.Link href="/TerraInvictaShipBuilder/about">About</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

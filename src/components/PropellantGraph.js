@@ -1,4 +1,4 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label, Text } from 'recharts';
 
 export default function PropellantGraph (props) {
   let data = []
@@ -24,9 +24,14 @@ export default function PropellantGraph (props) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-        <XAxis dataKey="count"/>
-        <YAxis yAxisId="left" />
-        <YAxis yAxisId="right" orientation="right" /><YAxis />
+        <XAxis dataKey="count" type="number"label={{value: "Propellant (Tanks)", offset: -5, position: "insideBottom"}}/>
+        <YAxis yAxisId="left">
+          <Label angle={-90} position="insideLeft" style={{ textAnchor: 'middle' }}>
+            Delta-v (kps)
+          </Label>
+        </YAxis>
+        <YAxis yAxisId="right" orientation="right" label={{value: "Acceleration (milligee)", angle: 90, offset: 0, position: "right", style: {textAnchor: 'middle'} }}/>
+        <YAxis />
         <Tooltip />
         <Legend />
         <Line yAxisId="left" type="monotone" dataKey="dv" stroke="#8884d8" activeDot={{ r: 8 }} />

@@ -10,7 +10,6 @@ const InputDropdown = (props) => {
   let parentRef = React.createRef()
 
   const focusHandler = e => {
-    console.log('focus')
     setShowDrop(true)
     setFilter('')
   }
@@ -25,7 +24,6 @@ const InputDropdown = (props) => {
   }
 
   const itemOnSelect = (item) => {
-    console.log(item)
     setShowDrop(false)
     setFilter(null)
     if (props.handler) props.handler(item)
@@ -37,8 +35,9 @@ const InputDropdown = (props) => {
         type="search" 
         placeholder={props.placeholder || props.val} 
         value={(filter === null ? (props.val || '') : filter)} 
-        onFocus={focusHandler} onChange={e => 
-        setFilter(e.target.value)}
+        onFocus={focusHandler} 
+        onChange={e => setFilter(e.target.value)}
+        disabled={props.disabled}
       />
       <ListGroup style={{display: (showDrop ? 'block' : 'none')}}>
         {

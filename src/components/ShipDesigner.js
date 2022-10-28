@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button'
 import InputDropdown from './InputDropdown'
 import ModifiableInputList from './ModifiableInputList'
 import { isDriveCompatible } from '../data/shipCalculator'
+import { useState } from 'react'
 
 function ShipDesigner(props) {
   const currentShip = props.currentShip
@@ -14,6 +15,8 @@ function ShipDesigner(props) {
       [attribute]: value
     })
   }
+
+  const [useIndividualArmor, setUseIndividualArmor] = useState(false)
 
   const setBestReactor = () => {
     const validType = props.data.drives[props.currentShip.drive].requiredPowerPlant
@@ -29,6 +32,31 @@ function ShipDesigner(props) {
     }
 
     getAttributeHandler('powerPlant')(bestReactor)
+  }
+
+  const handleFrontArmorSelect = (newVal) => {
+    if (!useIndividualArmor) {
+      props.handler({
+        ...currentShip,
+        frontArmor: newVal,
+        sideArmor: newVal,
+        tailArmor: newVal
+      })
+    }
+    else {
+      getAttributeHandler('frontArmor')(newVal);
+    }
+  }
+
+  const toggleUseIndividualArmor = () => {
+    if (useIndividualArmor) {
+      props.handler({
+        ...currentShip,
+        sideArmor: currentShip.frontArmor,
+        tailArmor: currentShip.frontArmor
+      })
+    }
+    setUseIndividualArmor(!useIndividualArmor)
   }
 
   return (
@@ -99,6 +127,44 @@ function ShipDesigner(props) {
           items={props.data.hullWeaponNames}
           handler={getAttributeHandler('hullWeapons')}
         />
+        <hr/>
+        <ModifiableInputList
+          title="Utility Slots"
+          val={currentShip.utilitySlots}
+          getCount={weapon => 1}
+          capacity={props.data.hulls[currentShip.hull].internalModules}
+          items={Object.keys(props.data.utility)}
+          handler={getAttributeHandler('utilitySlots')}
+        />
+        <hr/>
+        <Form.Check type="checkbox" label="Customize individual armor section" value={useIndividualArmor} onChange={toggleUseIndividualArmor}/>
+        <Form.Group className="row">
+          <Form.Label className='col-md-3 col-12'>Front Armor</Form.Label>
+          <Col className="col-md-7 col-8">
+            <InputDropdown items={Object.keys(props.data.armor)} val={currentShip.frontArmor} handler={handleFrontArmorSelect}/>
+          </Col>
+          <Col className="col-md-2 col-4">
+          <Form.Control type="number" min="0" value={currentShip.frontArmorCount} onChange={e => getAttributeHandler('frontArmorCount')(e.target.value)}/>
+          </Col>
+        </Form.Group>
+        <Form.Group className="row">
+          <Form.Label className='col-md-3 col-12'>Side Armor</Form.Label>
+          <Col className="col-md-7 col-8">
+            <InputDropdown items={Object.keys(props.data.armor)} val={currentShip.sideArmor} handler={getAttributeHandler('sideArmor')} disabled={!useIndividualArmor}/>
+          </Col>
+          <Col className="col-md-2 col-4">
+          <Form.Control type="number" min="0" value={currentShip.sideArmorCount} onChange={e => getAttributeHandler('sideArmorCount')(e.target.value)}/>
+          </Col>
+        </Form.Group>
+        <Form.Group className="row">
+          <Form.Label className='col-md-3 col-12'>Tail Armor</Form.Label>
+          <Col className="col-md-7 col-8">
+            <InputDropdown items={Object.keys(props.data.armor)} val={currentShip.tailArmor} handler={getAttributeHandler('tailArmor')} disabled={!useIndividualArmor}/>
+          </Col>
+          <Col className="col-md-2 col-4">
+          <Form.Control type="number" min="0" value={currentShip.tailArmorCount} onChange={e => getAttributeHandler('tailArmorCount')(e.target.value)}/>
+          </Col>
+        </Form.Group>
       </Form>
     </div>
   );

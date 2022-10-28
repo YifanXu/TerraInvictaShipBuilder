@@ -16,7 +16,14 @@ const defaultShip = {
   radiator: 'Aluminum Fin',
   battery: 'Lithium-Ion Battery',
   noseWeapons: [],
-  hullWeapons: []
+  hullWeapons: [],
+  utilitySlots: [],
+  frontArmor: 'Steel Armor',
+  sideArmor: 'Steel Armor',
+  tailArmor: 'Steel Armor',
+  frontArmorCount: 0,
+  sideArmorCount: 0,
+  tailArmorCount: 0,
 }
 
 function BuildSim() {

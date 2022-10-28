@@ -5,6 +5,10 @@ import radiators from './radiators.json'
 import hulls from './hulls.json'
 import batteries from './batteries.json'
 import weapons from './weapons.json'
+import armor from './armor.json'
+import utility from './utility.json'
+
+import constants from './calculationConstants.json'
 
 var dataInitialized = false;
 
@@ -13,8 +17,8 @@ export default function loader () {
     dataInitialized = true
   }
   Object.values(drives).forEach(drive => {
-    drive.thrustRating = Math.round(1.445 * Math.log(drive.thrust_N * 0.001981) * 10) / 10
-    drive.evRating = Math.round(1.443 * Math.log(drive.EV_kps * 0.9961) * 10) / 10
+    drive.thrustRating = Math.round(constants.thrustRatingOutputScale * Math.log(drive.thrust_N * constants.thrustRatingInputScale) * 10) / 10
+    drive.evRating = Math.round(constants.evRatingOutputScale * Math.log(drive.EV_kps * constants.evRatingInputScale) * 10) / 10
     drive.sumCost = drive.requiredProjectName ? techs[drive.requiredProjectName].sumCost : 0;
   })
 
@@ -35,6 +39,13 @@ export default function loader () {
     bat.sumCost = bat.requiredProjectName ? techs[bat.requiredProjectName].sumCost : 0;
   })
 
+  Object.values(armor).forEach(a => {
+    a.sumCost = a.requiredProjectName ? techs[a.requiredProjectName].sumCost : 0;
+  })
+
+  Object.values(utility).forEach(a => {
+    a.sumCost = a.requiredProjectName ? techs[a.requiredProjectName].sumCost : 0;
+  })
 
   const noseWeaponNames = [];
   const hullWeaponNames = [];
@@ -51,8 +62,6 @@ export default function loader () {
   noseWeaponNames.sort((a,b) => weapons[a].slotCount - weapons[b].slotCount)
   hullWeaponNames.sort((a,b) => weapons[a].slotCount - weapons[b].slotCount)
 
-  console.log(weapons)
-
   return {
     drives,
     powerplants,
@@ -61,6 +70,8 @@ export default function loader () {
     hulls,
     batteries,
     weapons,
+    armor,
+    utility,
     noseWeaponNames,
     hullWeaponNames
   }
@@ -69,9 +80,9 @@ export default function loader () {
 function calcCostFor (projName, calcualatedProjects = []) {
   let proj = techs[projName]
   let sumCost = proj.researchCost
-  for (let i = 4; i <= 8; i++) {
-    if (proj[i] && !calcualatedProjects.includes(projName)) {
-      sumCost += calcCostFor(proj[i], calcualatedProjects)
+  for (const prereq of proj.prereqs) {
+    if (prereq && !calcualatedProjects.includes(projName)) {
+      sumCost += calcCostFor(prereq, calcualatedProjects)
     }
   }
   calcualatedProjects.push(projName)

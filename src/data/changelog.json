@@ -1,0 +1,15 @@
+[
+  {
+    "title": "Experimental 0.1.0",
+    "date": "October 28, 2022",
+    "content": [
+      "Intial Release with component details and build sim",
+      "TODO: Utility modules not correctly modifying ship stats",
+      "TODO: Ship build sim needs cost and research cost page",
+      "TODO: Ship build sim needs import/export and save build functionality",
+      "TODO: Auto optimization for ship drive/powerplants",
+      "TODO: Ship offensive weapon calculation",
+      "TODO: Homepage + Writeup on drives"
+    ]
+  }
+]

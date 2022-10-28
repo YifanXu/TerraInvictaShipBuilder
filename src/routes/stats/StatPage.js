@@ -68,6 +68,7 @@ function StatPage(props) {
         columns={statTypeBlock.columns} 
         display={statTypeBlock.columnDisplay} 
         rowOnClick={rowOnClick.bind(this)}
+        key={props.for}
       ></RSTable>
       <Offcanvas show={showOffcanvas} onHide={() => setshowOffcanvas(false)} placement='end'>
         <Offcanvas.Header closeButton>

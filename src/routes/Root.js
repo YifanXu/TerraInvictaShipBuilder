@@ -13,7 +13,16 @@ function Root() {
     <div className="App">
       <Navbar bg="light" expand="lg">
         <Container>
-        <Navbar.Brand><NavLink className="navLink brand" as={Link} to="/">Terra Invicta Shipbuilder</NavLink></Navbar.Brand>
+        <Navbar.Brand>
+            <img
+              alt=""
+              src="./logo192.png"
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />{' '}
+            <NavLink className="navLink brand" as={Link} to="/">Terra Invicta Shipbuilder</NavLink>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">

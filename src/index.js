@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import {
   createHashRouter,
-  RouterProvider,
-  Route,
+  RouterProvider
 } from "react-router-dom";
 import "./index.css";
 

@@ -57,6 +57,19 @@ export default function calculateStatistics (data, shipDesign) {
       batteryCap: loadout.battery.energyCapacity_GJ,
       constructionTime: loadout.hull.baseConstructionTime_days,
     },
+    propulsion: {
+      baseThrust: loadout.drive.thrust_N * loadout.driveCount,
+      thrustMultiplier: 1,
+      finalThrust: 0,
+      finalThrustRating: 0,
+      baseEV: loadout.drive.EV_kps,
+      evMultiplier: 1,
+      finalEV: 0,
+      finalEVRating: 0,
+      cruiseAccel: 0,
+      combatAccel: 0,
+      cruiseDV: 0,
+    },
     power: {
       coolingType: loadout.drive.cooling,
       drivePower: loadout.drive.cooling === 'Open' ? 0 : loadout.drive.thrust_N * loadout.driveCount * loadout.drive.EV_kps / constants.drivePowerRatio,
@@ -97,6 +110,45 @@ export default function calculateStatistics (data, shipDesign) {
 
   result.general.crew = crewSum
 
+  // Utility
+  let occupiedSlots = []
+  loadout.utilitySlots.forEach((util, i) => {
+    if (util.type === 'heatsink') {
+      result.general.heatsinkCap += util.heatCapacity_GJ
+    }
+    else {
+      // Check module grouping
+      if (util.grouping !== -1) {
+        if (occupiedSlots[util.grouping]) {
+          result.validation.push(`${occupiedSlots[util.grouping].friendlyName} cannot co-exist with ${util.friendlyName} (Group ${util.grouping})`)
+        }
+        else {
+          occupiedSlots[util.grouping] = util
+        }
+      }
+
+      // Check drive requirement
+      if (util.requiresHydrogenPropellant && loadout.drive.propellant !== 'Hydrogen') {
+        result.validation.push(`${util.friendlyName} requires hydrogen propellant, but your drive uses ${loadout.drive.propellant}.`)
+      }
+      if (util.requiresNuclearDrive && !loadout.drive.driveClassification.includes("Fission")) {
+        result.validation.push(`${util.friendlyName} requires nuclear drive, but your drive is classified as "${loadout.drive.driveClassification}".`)
+      }
+      else if (util.requiresFusionDrive && !loadout.drive.driveClassification.includes("Fusion")) {
+        result.validation.push(`${util.friendlyName} requires nuclear drive, but your drive is classified as "${loadout.drive.driveClassification}".`)
+      }
+
+      if (util.thrustMultiplier && util.thrustMultiplier !== 1) {
+        console.log(util.thrustMultiplier)
+        result.propulsion.thrustMultiplier *= util.thrustMultiplier
+      }
+
+      if (util.EVMultiplier && util.EVMultiplier !== 1) {
+        result.propulsion.evMultiplier *= util.EVMultiplier
+      }
+    }
+  })
+
   // Power
   result.power.crewPower = crewSum * constants.crewPower
   result.power.powerOutput = Math.max(result.power.drivePower, result.power.crewPower + result.power.batteryPower)
@@ -104,6 +156,14 @@ export default function calculateStatistics (data, shipDesign) {
   result.power.crewWasteHeat = crewSum * constants.crewWasteHeat;
   result.power.wasteHeat = Math.max(result.power.driveWasteHeat, result.power.crewWasteHeat)
 
+  // Power Validation
+  if (!isDriveCompatible(loadout.drive.requiredPowerPlant, loadout.powerPlant)) {
+    result.validation.push(`${loadout.drive.friendlyName} is incompatible with ${loadout.powerPlant.friendlyName}`)
+  }
+
+  if (result.power.powerOutput > result.power.maxGeneratedPower) {
+    result.validation.push(`Power required (${result.power.powerOutput} GW) exceeds maximum generated power (${result.power.maxGeneratedPower} GW) from ${loadout.powerPlant.friendlyName}`)
+  }
 
   // Mass
   let massTable = {}
@@ -139,9 +199,18 @@ export default function calculateStatistics (data, shipDesign) {
 
 
   // Propulsion
-  result.general.cruiseAccel = loadout.drive.thrust_N * loadout.driveCount / result.general.wetMass / constants.g
-  result.general.combatAccel = result.general.cruiseAccel * loadout.drive.thrustCap
-  result.general.cruiseDV = constants.cruiseDVMutliplier * loadout.drive.EV_kps * Math.log10(result.general.wetMass / result.general.dryMass)
+  result.propulsion.finalThrust = result.propulsion.baseThrust * result.propulsion.thrustMultiplier
+  result.propulsion.finalThrustRating = Math.round(constants.thrustRatingOutputScale * Math.log(result.propulsion.finalThrust * constants.thrustRatingInputScale) * 10) / 10
+  result.propulsion.finalEV = result.propulsion.baseEV * result.propulsion.evMultiplier
+  result.propulsion.finalEVRating = Math.round(constants.evRatingOutputScale * Math.log(result.propulsion.finalEV * constants.evRatingInputScale) * 10) / 10
+
+  result.propulsion.cruiseAccel = result.propulsion.finalThrust / result.general.wetMass / constants.g
+  result.propulsion.combatAccel = result.propulsion.cruiseAccel * loadout.drive.thrustCap
+  result.propulsion.cruiseDV = constants.cruiseDVMutliplier * result.propulsion.finalEV * Math.log10(result.general.wetMass / result.general.dryMass)
+
+  result.general.cruiseAccel = result.propulsion.cruiseAccel
+  result.general.combatAccel = result.propulsion.combatAccel
+  result.general.cruiseDV = result.propulsion.cruiseDV
 
   result.crewTable = Object.values(crewTable)
   result.massTable = Object.values(massTable)

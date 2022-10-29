@@ -1,0 +1,20 @@
+.tab-pane {
+  width: 100%;
+  height: 300px;
+}
+
+.validation {
+  height: fit-content;
+  overflow-y: visible;
+}
+
+.validation > div {
+  padding: 5px;
+  color: var(--bs-danger);
+}
+
+.validationPassText {
+  color: var(--bs-success);
+  font-weight: bold!;
+  text-decoration: underline;
+}

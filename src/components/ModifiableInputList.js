@@ -10,20 +10,24 @@ import InputDropdown from './InputDropdown';
 const ModifiableInputList = (props) => {
   const [count, setCount] = useState(0)
 
-  const setEntry = (slotNum, newVal) => {
-    setCount(count + props.getCount(newVal) - props.getCount(props.val[slotNum]))
+  const getCount = (val) => {
+    return val.slotCount || 1
+  }
+
+  const setEntry = (slotNum, newVal, newVBody) => {
+    setCount(count + getCount(newVBody) - getCount(props.val[slotNum]))
     let newArr = [...props.val]
     newArr[slotNum] = newVal
     props.handler(newArr)
   }
 
-  const addEntry = (newVal) => {
-    setCount(count + props.getCount(newVal))
+  const addEntry = (newVal, newValBody) => {
+    setCount(count + getCount(newValBody))
     props.handler([...props.val, newVal])
   }
 
   const removeEntry = (slotNum) => {
-    setCount(count - props.getCount(props.val[slotNum]))
+    setCount(count - getCount(props.val[slotNum]))
     let newArr = [...props.val]
     newArr.splice(slotNum, 1)
     props.handler(newArr)
@@ -32,7 +36,7 @@ const ModifiableInputList = (props) => {
   const list = props.val.map((v, i) => (
     <Row key={v}>
       <Col className="col-11">
-        <InputDropdown items={props.items} val={v} handler={newV => setEntry(i, newV)}/>
+        <InputDropdown items={props.items} val={v} handler={(newV, newVBody) => setEntry(i, newV, newVBody)} filteralien={props.filteralien}/>
       </Col>
       <Button className="btn btn-danger col-1" onClick={() => removeEntry(i)}>X</Button>
     </Row>
@@ -42,7 +46,16 @@ const ModifiableInputList = (props) => {
     list.push(
       <Row key='insertDropDown'>
         <Col className="col-11">
-          <InputDropdown className="col-11" items={props.items} val="" placeholder="Add..." handler={addEntry} extraInfo={val => props.getCount(val)} warnItem={val => props.getCount(val) > props.capacity - count}/>
+          <InputDropdown 
+            className="col-11" 
+            items={props.items} 
+            val="" 
+            placeholder="Add..." 
+            handler={addEntry} 
+            extraInfo={val => getCount(val)} 
+            warnItem={val => getCount(val) > props.capacity - count} 
+            filteralien={props.filteralien}
+          />
         </Col>
       </Row>
     )

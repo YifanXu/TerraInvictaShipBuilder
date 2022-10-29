@@ -23,10 +23,10 @@ const InputDropdown = (props) => {
     });
   }
 
-  const itemOnSelect = (item) => {
+  const itemOnSelect = (item, itemVal) => {
     setShowDrop(false)
     setFilter(null)
-    if (props.handler) props.handler(item)
+    if (props.handler) props.handler(item, itemVal)
   }
 
   return (
@@ -41,9 +41,9 @@ const InputDropdown = (props) => {
       />
       <ListGroup style={{display: (showDrop ? 'block' : 'none')}}>
         {
-          props.items.map(item => (
-            (!filter || item.toLowerCase().includes(filter.toLowerCase())) 
-              ? <ListGroup.Item key={item} onClick={() => itemOnSelect(item)}><button className={(props.warnItem && props.warnItem(item)) ? 'danger' : 'normal'}>{item + (props.extraInfo ? ` (${props.extraInfo(item)})` : '')}</button></ListGroup.Item> 
+          Object.entries(props.items).map(([item, itemVal]) => (
+            (!filter || item.toLowerCase().includes(filter.toLowerCase())) && (!props.filter || props.filter(itemVal)) && (props.showalien || itemVal.sumCost !== -1)
+              ? <ListGroup.Item key={item} onClick={() => itemOnSelect(item, itemVal)}><button className={(props.warnItem && props.warnItem(itemVal)) ? 'danger' : 'normal'}>{item + (props.extraInfo ? ` (${props.extraInfo(item)})` : '')}</button></ListGroup.Item> 
               : null
           ))
         }

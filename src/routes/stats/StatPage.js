@@ -1,9 +1,11 @@
 import "./StatPage.css"
 import RSTable from "../../components/RSTable";
 import { useLoaderData } from 'react-router-dom'
+import { Form } from 'react-bootstrap'
 import { useState } from 'react'
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Table from 'react-bootstrap/Table'
+import BuildCostDisplay, { scaleBuildCost } from "../../components/BuildCostDisplay";
 
 import StatPageDisplayTable from './StatPageDisplayTable.json'
 
@@ -56,14 +58,25 @@ function StatPage(props) {
     return result
   }
 
+  const transformObject = statTypeBlock.costTransforms ? {...statTypeBlock.costTransforms} : undefined
+
+  if (transformObject) {
+    for (const [key, val] of Object.entries(transformObject)) {
+      transformObject[key] = (entry) => <BuildCostDisplay data={scaleBuildCost(entry, val)}/>
+    }
+  } 
+
   return (
     <div className="Stat">
       <h4>{statTypeBlock.title}</h4>
-      Search <input value={filter} onChange={e => setFilter(e.target.value.toLowerCase())}></input>
+      <Form.Label>Search</Form.Label> 
+      <Form.Control type="text" className="filterInput" value={filter} onChange={e => setFilter(e.target.value.toLowerCase())}/>
+      <Form.Check type="switch" label="Show Alien Parts"/>
       <hr/>
       <RSTable 
         tooltips={statTypeBlock.tooltips} 
-        data={Object.values(data)} 
+        transform={transformObject}
+        data={Object.values(data)}
         filter={row => !filter || row.friendlyName.toLowerCase().includes(filter)} 
         columns={statTypeBlock.columns} 
         display={statTypeBlock.columnDisplay} 

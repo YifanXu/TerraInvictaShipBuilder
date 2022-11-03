@@ -3,21 +3,25 @@ import { useState } from 'react'
 import Table from 'react-bootstrap/Table'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import round from '../data/round';
 
 const RSTable = props => {
   const columns = props.columns
-  let [data, setData] = useState(props.data)
+  let tempData = props.data
+
+  let [data, setData] = useState(tempData)
   let [filterBy, setFilterBy] = useState (null)
   let [ascending, setAscending] = useState (true)
 
   const body = data.map((dataRow, index) => (
     (props.filter && !props.filter(dataRow)) ? null : 
     <tr key={index} onClick={() => {if(props.rowOnClick) props.rowOnClick(dataRow)}}>
-      {columns.map(column => <td key={column} style={props.highlight ? props.highlight(dataRow, column) : {}}>{dataRow[column] === undefined ? "" : dataRow[column]}</td>)}
+      {columns.map(column => <td key={column} style={props.highlight ? props.highlight(dataRow, column) : {}}>{dataRow[column] === undefined ? "" : ((props.transform && props.transform[column] ?  props.transform[column](dataRow[column]) : typeof dataRow[column] === 'number' ? round(dataRow[column]) : dataRow[column]))}</td>)}
     </tr>
   ))
 
   const setSort = (column) => {
+    if (props.transform[column]) return;
     if (filterBy === column) {
       // Just reverse ascend/descend
       setData([...data].reverse())

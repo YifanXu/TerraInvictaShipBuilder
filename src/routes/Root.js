@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom'
 
-import drives from '../data/drives.json'
+import logo from '../data/websitelogo.png'
 
 function Root() {
   return (
@@ -16,7 +16,7 @@ function Root() {
         <Navbar.Brand>
             <img
               alt=""
-              src="./logo192.png"
+              src={logo}
               width="30"
               height="30"
               className="d-inline-block align-top"
@@ -51,7 +51,3 @@ function Root() {
 }
 
 export default Root;
-
-export function loader() {
-  return { drives };
-}

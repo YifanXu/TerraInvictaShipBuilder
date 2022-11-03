@@ -7,6 +7,7 @@ import batteries from './batteries.json'
 import weapons from './weapons.json'
 import armor from './armor.json'
 import utility from './utility.json'
+import { scaleBuildCost } from '../components/BuildCostDisplay'
 
 import constants from './calculationConstants.json'
 
@@ -33,6 +34,7 @@ export default function loader () {
 
   Object.values(hulls).forEach(hull => {
     hull.sumCost = hull.requiredProjectName ? techs[hull.requiredProjectName].sumCost : 0;
+    hull.totalBuildMaterials = scaleBuildCost(hull.weightedBuildMaterials, hull.mass_tons / 10)
   })
   
   Object.values(batteries).forEach(bat => {
@@ -79,6 +81,7 @@ export default function loader () {
 
 function calcCostFor (projName, calcualatedProjects = []) {
   let proj = techs[projName]
+  if (!proj) return 0
   let sumCost = proj.researchCost
   for (const prereq of proj.prereqs) {
     if (prereq && !calcualatedProjects.includes(projName)) {
@@ -89,7 +92,7 @@ function calcCostFor (projName, calcualatedProjects = []) {
   return sumCost
 }
 
-export function sumCost (technologies) {
+export function calcSumCost (technologies) {
   let sum = 0
   let researched = []
   for (const tech of technologies) {

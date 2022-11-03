@@ -42,6 +42,14 @@ function ShipBuildDisplay (props) {
             display={['Source', 'Unit', 'Count', 'Total']}
           ></RSTable>
         </Tab>
+        <Tab eventKey="research" title="Research">
+          <RSTable 
+            data={props.data.researchTable} 
+            filter={row => true} 
+            columns={['source', 'unit', 'count', 'total']} 
+            display={['Source', 'Unit', 'Count', 'Total']}
+          ></RSTable>
+        </Tab>
         <Tab eventKey="propellant" title="Propellant">
           <PropellantGraph max={200} interval={5} dryMass={props.data.general.dryMass} ev={props.data.loadout.drive.EV_kps} thrust={props.data.loadout.drive.thrust_N * props.data.loadout.driveCount}/>
         </Tab>

@@ -1,0 +1,27 @@
+.resourceSpan.water {
+  color: darkblue
+}
+
+.resourceSpan.volatiles {
+  color:orangered
+}
+
+.resourceSpan.metals {
+  color: gray
+}
+
+.resourceSpan.nobleMetals {
+  color :darkgoldenrod
+}
+
+.resourceSpan.fissles {
+  color: darkgreen
+}
+
+.resourceSpan.antimatter {
+  color: black
+}
+
+.resourceSpan.exotics {
+  color: purple
+}

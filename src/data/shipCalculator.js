@@ -1,4 +1,5 @@
 import constants from './calculationConstants.json'
+import { calcSumCost } from './dataLoader'
 
 function addEntryToDetailTable (table, source, unit, count) {
   let total = unit * count
@@ -8,22 +9,45 @@ function addEntryToDetailTable (table, source, unit, count) {
       throw new Error(`Incosistent Unit prices for ${source}!`)
     }
 
-    table[source].count += round(count)
-    table[source].total += round(total)
+    table[source].count += count
+    table[source].total += total
   }
   else {
     table[source] = {
       source,
       unit,
-      count: round(count),
-      total: round(total)
+      count: count,
+      total: total
     }
   }
 
   return total
 }
 
-const round = num => Math.round(num * 100) / 100 
+const addToCostTable = (baseCosts, newCosts) => {
+  for (const resourceType of baseCosts) {
+
+  }
+}
+
+const addToResearchTable = (table, list, techs) => {
+  for (const item of list) {
+    if (typeof item !== 'object') {
+      continue;
+    }
+
+    if (Array.isArray(item)) {
+      addToResearchTable(table, item, techs)
+    }
+
+    else if (!table[item.friendlyName]) {
+      techs.push(item.requiredProjectName)
+      addEntryToDetailTable(table, item.friendlyName, item.sumCost, 1)
+    }
+  }
+
+  return techs
+}
 
 export default function calculateStatistics (data, shipDesign) {
   const loadout = {
@@ -189,9 +213,9 @@ export default function calculateStatistics (data, shipDesign) {
   }
 
   // Armor
-  massSum += addEntryToDetailTable(massTable, `FRONT: ${loadout.frontArmor.friendlyName}`, Math.round(Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m * 10) / 10, loadout.frontArmorCount)
-  massSum += addEntryToDetailTable(massTable, `SIDE: ${loadout.sideArmor.friendlyName}`, Math.round(Math.PI * 2 / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.length_m * 10) / 10, loadout.sideArmorCount)
-  massSum += addEntryToDetailTable(massTable, `TAIL: ${loadout.tailArmor.friendlyName}`, Math.round(Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m * 10) / 10, loadout.tailArmorCount)
+  massSum += addEntryToDetailTable(massTable, `FRONT: ${loadout.frontArmor.friendlyName}`, Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m, loadout.frontArmorCount)
+  massSum += addEntryToDetailTable(massTable, `SIDE: ${loadout.sideArmor.friendlyName}`, Math.PI * 2 / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.length_m, loadout.sideArmorCount)
+  massSum += addEntryToDetailTable(massTable, `TAIL: ${loadout.tailArmor.friendlyName}`, Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m, loadout.tailArmorCount)
 
   result.general.dryMass = massSum;
   massSum += addEntryToDetailTable(massTable, 'Propellant', 100, loadout.propellantCount)
@@ -200,9 +224,9 @@ export default function calculateStatistics (data, shipDesign) {
 
   // Propulsion
   result.propulsion.finalThrust = result.propulsion.baseThrust * result.propulsion.thrustMultiplier
-  result.propulsion.finalThrustRating = Math.round(constants.thrustRatingOutputScale * Math.log(result.propulsion.finalThrust * constants.thrustRatingInputScale) * 10) / 10
+  result.propulsion.finalThrustRating = constants.thrustRatingOutputScale * Math.log(result.propulsion.finalThrust * constants.thrustRatingInputScale)
   result.propulsion.finalEV = result.propulsion.baseEV * result.propulsion.evMultiplier
-  result.propulsion.finalEVRating = Math.round(constants.evRatingOutputScale * Math.log(result.propulsion.finalEV * constants.evRatingInputScale) * 10) / 10
+  result.propulsion.finalEVRating = constants.evRatingOutputScale * Math.log(result.propulsion.finalEV * constants.evRatingInputScale)
 
   result.propulsion.cruiseAccel = result.propulsion.finalThrust / result.general.wetMass / constants.g
   result.propulsion.combatAccel = result.propulsion.cruiseAccel * loadout.drive.thrustCap
@@ -212,21 +236,36 @@ export default function calculateStatistics (data, shipDesign) {
   result.general.combatAccel = result.propulsion.combatAccel
   result.general.cruiseDV = result.propulsion.cruiseDV
 
+  // Research
+  let researchTable = {}
+  let projectsRequired = addToResearchTable(researchTable, Object.values(loadout), [])
+  const totalSumCost = calcSumCost(projectsRequired)
+
+  // Finishing Up
+
   result.crewTable = Object.values(crewTable)
   result.massTable = Object.values(massTable)
+  result.researchTable = Object.values(researchTable)
+
+  result.researchTable.push({
+    source: 'Total',
+    unit: '',
+    count: '',
+    total: totalSumCost
+  })
 
   result.crewTable.push({
     source: 'Total',
     unit: '',
     count: '',
-    total: round(crewSum)
+    total: crewSum
   })
 
   result.massTable.push({
     source: 'Total',
     unit: '',
     count: '',
-    total: round(massSum)
+    total: massSum
   })
 
   result.loadout = loadout

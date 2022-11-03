@@ -4,37 +4,36 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import React, { useState } from 'react';
 import InputDropdown from './InputDropdown';
 
 const ModifiableInputList = (props) => {
-  const [count, setCount] = useState(0)
+  let count = 0
+  for (let item of props.val) {
+    count += props.getCount(item)
+  }
 
   const getCount = (val) => {
     return val.slotCount || 1
   }
 
   const setEntry = (slotNum, newVal, newVBody) => {
-    setCount(count + getCount(newVBody) - getCount(props.val[slotNum]))
     let newArr = [...props.val]
     newArr[slotNum] = newVal
     props.handler(newArr)
   }
 
   const addEntry = (newVal, newValBody) => {
-    setCount(count + getCount(newValBody))
     props.handler([...props.val, newVal])
   }
 
   const removeEntry = (slotNum) => {
-    setCount(count - getCount(props.val[slotNum]))
     let newArr = [...props.val]
     newArr.splice(slotNum, 1)
     props.handler(newArr)
   }
 
   const list = props.val.map((v, i) => (
-    <Row key={v}>
+    <Row key={i}>
       <Col className="col-11">
         <InputDropdown items={props.items} val={v} handler={(newV, newVBody) => setEntry(i, newV, newVBody)} filteralien={props.filteralien}/>
       </Col>

@@ -12,7 +12,9 @@
       "evRating", 
       "cooling", 
       "sumCost", 
-      "propellant"
+      "propellant",
+      "weightedBuildMaterials",
+      "perTankPropellantMaterials"
     ],
     "columnDisplay": [
       "Name", 
@@ -25,7 +27,9 @@
       "EV Rating", 
       "cooling", 
       "Research Cost", 
-      "Propellant"
+      "Propellant",
+      "Build Cost",
+      "Fuel/Tank"
     ],
     "tooltips": [
       "Name of the drive in game",
@@ -38,8 +42,14 @@
       "Thrust Rating as shown in game. Calculated by 1.443 * ln(EV * 0.9961)", 
       "Open cycle drives do not produce waste heat. Otherwise, waste heat is produced, leading to increase radiator mass", 
       "Amount of research required for this drive, including all pre-requisites", 
-      "Type of propellant used"
-    ]
+      "Type of propellant used",
+      "Cost of building the engine itself",
+      "Cost of 1 tank of propellant"
+    ],
+    "costTransforms": {
+      "weightedBuildMaterials": 1,
+      "perTankPropellantMaterials": 10
+    }
   },
   "powerplants": {
     "title": "All Power Plants",
@@ -50,7 +60,8 @@
       "maxOutput_GW", 
       "efficiency",
       "generalUse",
-      "sumCost", 
+      "sumCost",
+      "weightedBuildMaterials", 
       "crew"
     ],
     "columnDisplay": [
@@ -61,6 +72,7 @@
       "Efficency",
       "General Use",
       "Research Cost", 
+      "Cost/Ton",
       "Crew Count"
     ],
     "tooltips": [
@@ -71,8 +83,12 @@
       "Waste heat is porportional to (1-efficency)", 
       "Can be used by drives that require Any_General", 
       "Amount of research required for this power plant, including all pre-requisites", 
+      "Cost of 1 ton of the power plant",
       "Number of crew needed"
-    ]
+    ],
+    "costTransforms": {
+      "weightedBuildMaterials": 1
+    }
   },
   "techs": {
     "title": "Technologies",
@@ -105,6 +121,7 @@
       "vulnerability", 
       "specificMass_tonGW",
       "sumCost",
+      "weightedBuildMaterials",
       "crew"
     ],
     "columnDisplay": [
@@ -112,6 +129,7 @@
       "Vulnerability", 
       "Specific Mass (ton/GW)",
       "Research Cost",
+      "Cost per ton",
       "Crew per ton"
     ],
     "tooltips": [
@@ -119,8 +137,12 @@
       "How vulnerable the radiator is when deployed in combat",
       "Mass of the radiator per GW of waste heat",
       "Cost of researching this radiator and all of its pre-requisites",
+      "Materials required per ton",
       "Number of crew needed per ton"
-    ]
+    ],
+    "costTransforms": {
+      "weightedBuildMaterials": 1
+    }
   },
   "hulls": {
     "title": "All Ship Hulls",
@@ -133,6 +155,7 @@
       "volume",
       "baseConstructionTime_days",
       "sumCost",
+      "totalBuildMaterials",
       "crew"
     ],
     "columnDisplay": [
@@ -144,6 +167,7 @@
       "Volume (m3)",
       "Construction Time",
       "Research Cost",
+      "Build Cost",
       "Crew Count"
     ],
     "tooltips": [
@@ -155,8 +179,12 @@
       "Volume (m3)",
       "Base construction time at a space dock",
       "Cost of researching this hull and all of its pre-requisites",
+      "Cost of building the hull",
       "Crew Count"
-    ]
+    ],
+    "costTransforms": {
+      "totalBuildMaterials": 1
+    }
   },
   "batteries": {
     "title": "All Batteries",
@@ -166,6 +194,7 @@
       "energyCapacity_GJ", 
       "rechargeRate_GJs",
       "sumCost",
+      "weightedBuildMaterials",
       "crew"
     ],
     "columnDisplay": [
@@ -174,6 +203,7 @@
       "Capacity (GJ)", 
       "Recharge Rate (GW)",
       "Research Cost",
+      "Build Cost",
       "Crew Count"
     ],
     "tooltips": [
@@ -182,8 +212,12 @@
       "Maximum Capacity of the battery", 
       "Amount of energy restored to the battery per second",
       "Cost of researching this hull and all of its pre-requisites",
+      "Cost of building the battery",
       "Crew Count"
-    ]
+    ],
+    "costTransforms": {
+      "weightedBuildMaterials": 1
+    }
   },
   "weapons": {
     "title": "Weapon Systems",
@@ -194,6 +228,7 @@
       "slotCount", 
       "mass_tons",
       "sumCost",
+      "weightedBuildMaterials",
       "crew"
     ],
     "columnDisplay": [
@@ -203,6 +238,7 @@
       "Slot Count", 
       "Mass (tons)",
       "Research Cost",
+      "Build Cost",
       "Crew"
     ],
     "tooltips": [
@@ -212,28 +248,38 @@
       "How many slots the weapon take up", 
       "Mass of the weapon, including base weapon and all ammunition",
       "Research Cost",
+      "Build Cost",
       "Total Crew count"
-    ]
+    ],
+    "costTransforms": {
+      "weightedBuildMaterials": 1
+    }
   },
   "armor": {
     "title": "Armor Platings",
     "columns": [
       "friendlyName",
       "heatofVaporization_MJkg",
-      "specialty", 
-      "sumCost"
+      "specialty",
+      "sumCost",
+      "weightedBuildMaterials"
     ],
     "columnDisplay": [
       "Name",
       "Armor Capacity",
       "Specialty",
-      "Research Cost"
+      "Research Cost",
+      "Cost per ton"
     ],
     "tooltips": [
       "Name of the armor",
       "Damage that 1 kg of the armor can absorb. The higher this value, the lighter each point of armor",
       "Bonus resistance that the armor offers",
-      "Research Cost of the tech required and its pre-requisites"
-    ]
+      "Research Cost of the tech required and its pre-requisites",
+      "Cost of building 1 ton of the armor"
+    ],
+    "costTransforms": {
+      "weightedBuildMaterials": 1
+    }
   }
 }

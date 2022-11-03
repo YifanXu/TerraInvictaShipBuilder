@@ -41,7 +41,7 @@ const InputDropdown = (props) => {
       />
       <ListGroup style={{display: (showDrop ? 'block' : 'none')}}>
         {
-          Object.entries(props.items).map(([item, itemVal]) => (
+          Object.entries(props.items).map(([item, itemVal]) => !itemVal ? null : (
             (!filter || item.toLowerCase().includes(filter.toLowerCase())) && (!props.filter || props.filter(itemVal)) && (props.showalien || itemVal.sumCost !== -1)
               ? <ListGroup.Item key={item} onClick={() => itemOnSelect(item, itemVal)}><button className={(props.warnItem && props.warnItem(itemVal)) ? 'danger' : 'normal'}>{item + (props.extraInfo ? ` (${props.extraInfo(item)})` : '')}</button></ListGroup.Item> 
               : null

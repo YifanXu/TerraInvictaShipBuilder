@@ -63,7 +63,7 @@ function ShipDesigner(props) {
   return (
     <div className="shipDesigner">
       <Form onSubmit={e => e.preventDefault()}>
-        <Form.Check type="switch" label="Show Non-researchable Parts" val={showAlien} onChange={() => setShowAlien(!showAlien)}/>
+        <Form.Check type="switch" label="Show Alien Parts" checked={showAlien} onChange={() => setShowAlien(!showAlien)}/>
         <hr/>
        <Form.Group as={Col}>
           <Form.Label>Hull</Form.Label>
@@ -149,7 +149,7 @@ function ShipDesigner(props) {
           showalien={showAlien ? 1 : 0}
         />
         <hr/>
-        <Form.Check type="checkbox" label="Customize individual armor section" value={useIndividualArmor} onChange={toggleUseIndividualArmor}/>
+        <Form.Check type="switch" label="Customize individual armor section" checked={useIndividualArmor} onChange={toggleUseIndividualArmor}/>
         <Form.Group className="row">
           <Form.Label className='col-md-3 col-12'>Front Armor</Form.Label>
           <Col className="col-md-7 col-8">

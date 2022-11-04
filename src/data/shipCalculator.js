@@ -205,10 +205,45 @@ export default function calculateStatistics (data, shipDesign) {
     buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, w.friendlyName, w.totalBuildMaterials, 1, true))
   }
 
+  const hullValidators = data.hullValidators[loadout.hull.friendlyName]
+  let currentHullCounts = {
+    light: 0,
+    standard: 0,
+    heavy: 0
+  }
   for (const w of loadout.hullWeapons) {
     massSum += addEntryToDetailTable(massTable, w.friendlyName, w.mass_tons, 1)
     buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, w.friendlyName, w.totalBuildMaterials, 1, true))
+
+    switch (w.slotCount) {
+      case 1:
+        currentHullCounts.light++
+        break;
+      case 2:
+        currentHullCounts.standard++
+        break;
+      case 4:
+        currentHullCounts.heavy++
+        break;
+      default:
+    }
   }
+
+  for (const validator of hullValidators) {
+    let meetValidator = true
+    for (const [type, count] of Object.entries(validator)) {
+      if (currentHullCounts[type] < count) {
+        meetValidator = false
+        break
+      }
+    }
+
+    if (meetValidator) {
+      // Uh oh
+      result.validation.push(validator.rule)
+    }
+  }
+  
 
   for (const util of loadout.utilitySlots) {
     massSum += addEntryToDetailTable(massTable, util.friendlyName, util.mass_tons, 1)

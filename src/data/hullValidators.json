@@ -1,0 +1,61 @@
+{
+  "Gunship": [],
+  "Escort": [
+    {
+      "light": 0,
+      "standard": 1,
+      "heavy": 0,
+      "rule": "Cannot fit 2-slot hull weapons, because the two slots are vertical"
+    }
+  ],
+  "Corvette": [],
+  "Frigate": [],
+  "Monitor": [
+    {
+      "light": 0,
+      "standard": 0,
+      "heavy": 1,
+      "rule": "Cannot fit 4-slot hull weapons, because hull slots are seperated into two 2x1 sections"
+    }
+  ],
+  "Destroyer": [
+    {
+      "light": 0,
+      "standard": 1,
+      "heavy": 0,
+      "rule": "Cannot fit 2-slot hull weapons, because the two slots are vertical"
+    }
+  ],
+  "Cruiser": [],
+  "Battlecruiser": [],
+  "Battleship": [
+    {
+      "light": 0,
+      "standard": 3,
+      "heavy": 0,
+      "rule": "Cannot fit three 2-slot hull weapons, because the hull weapons are laid out in a 3x2 area"
+    },
+    {
+      "light": 0,
+      "standard": 1,
+      "heavy": 1,
+      "rule": "Cannot fit the 2-slot hull weapons after a 4-slot weapon, because the slots required are vertical"
+    }
+  ],
+  "Lancer": [],
+  "Dreadnought": [],
+  "Titan": [
+    {
+      "light": 0,
+      "standard": 3,
+      "heavy": 0,
+      "rule": "Cannot fit three 2-slot hull weapons, because the hull weapons are laid out in a 3x2 area"
+    },
+    {
+      "light": 0,
+      "standard": 1,
+      "heavy": 1,
+      "rule": "Cannot fit the 2-slot hull weapons after a 4-slot weapon, because the slots required are vertical"
+    }
+  ]
+}

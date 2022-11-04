@@ -15,8 +15,8 @@ function ShipBuildDisplay (props) {
             {
               props.data.validation.length > 0 ?
               <ListGroup as="ul" className="validation position-static">
-                <ListGroup.Item><b>Validation Errors:</b></ListGroup.Item>
-                {props.data.validation.map(complaint => <ListGroup.Item>{complaint}</ListGroup.Item>)}
+                <ListGroup.Item key="title"><b>Validation Errors:</b></ListGroup.Item>
+                {props.data.validation.map(complaint => <ListGroup.Item key={complaint}>{complaint}</ListGroup.Item>)}
               </ListGroup>
               : <p className="validationPassText">All validation passed</p>
             }

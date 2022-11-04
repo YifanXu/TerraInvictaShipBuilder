@@ -47,8 +47,6 @@ function BuildSim() {
   }
   const [storedShips, setStoredShips] = useState(localInput || { default: defaultShip })
 
-  console.log(storedShips)
-
   const startingShip = (Object.values(storedShips)[0]) || {...defaultShip, name: ''}
   const [currentShip, setCurrentShip] = useState(startingShip)
   const [dataDisplay, setDataDisplay] = useState(calcShipStats(data, startingShip))

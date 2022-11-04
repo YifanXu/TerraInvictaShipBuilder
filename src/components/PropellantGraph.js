@@ -11,7 +11,6 @@ export default function PropellantGraph (props) {
       accel: Math.round(thrustConstant / wetMass * 10000) / 10000
     })
   }
-  console.log(thrustConstant)
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart

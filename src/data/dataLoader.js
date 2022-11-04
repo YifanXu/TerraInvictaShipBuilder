@@ -7,6 +7,7 @@ import batteries from './batteries.json'
 import weapons from './weapons.json'
 import armor from './armor.json'
 import utility from './utility.json'
+import hullValidators from './hullValidators.json'
 import { scaleBuildCost, addBuildCost } from '../components/BuildCostDisplay'
 
 import constants from './calculationConstants.json'
@@ -68,22 +69,12 @@ export default function loader () {
     }
   })
 
-  const noseWeaponNames = [];
-  const hullWeaponNames = [];
+  
   Object.values(weapons).forEach(weapon => {
     weapon.sumCost = weapon.requiredProjectName ? techs[weapon.requiredProjectName].sumCost : 0;
     weapon.reloadMaterials = weapon.ammoMaterials ? scaleBuildCost(weapon.ammoMaterials, weapon.ammoMass_kg / 10000 * weapon.magazine) : {}
     weapon.totalBuildMaterials = addBuildCost(scaleBuildCost(weapon.weightedBuildMaterials, weapon.baseWeaponMass_tons / 10), weapon.reloadMaterials)
-    if (weapon.mountLocation === 'nose') {
-      noseWeaponNames.push(weapon.friendlyName)
-    }
-    else {
-      hullWeaponNames.push(weapon.friendlyName)
-    }
   })
-
-  noseWeaponNames.sort((a,b) => weapons[a].slotCount - weapons[b].slotCount)
-  hullWeaponNames.sort((a,b) => weapons[a].slotCount - weapons[b].slotCount)
 
   return {
     drives,
@@ -95,8 +86,7 @@ export default function loader () {
     weapons,
     armor,
     utility,
-    noseWeaponNames,
-    hullWeaponNames
+    hullValidators
   }
 }
 

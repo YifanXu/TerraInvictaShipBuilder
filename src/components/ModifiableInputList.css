@@ -14,3 +14,11 @@
 .capacityDisplayLabel.warn {
   color: var(--bs-warning)
 }
+
+.modifiableInputList>.row {
+  margin: 0px;
+}
+
+.removeBtn {
+  width: 100%;
+}

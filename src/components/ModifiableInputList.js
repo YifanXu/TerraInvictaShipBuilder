@@ -33,20 +33,21 @@ const ModifiableInputList = (props) => {
   }
 
   const list = props.val.map((v, i) => (
-    <Row key={i}>
+    <Row key={i} className="col-12">
       <Col className="col-11">
         <InputDropdown items={props.items} val={v} handler={(newV, newVBody) => setEntry(i, newV, newVBody)} filter={props.filter} filteralien={props.filteralien}/>
       </Col>
-      <Button type="button" variant="outline-danger" className="btn col-1" onClick={() => removeEntry(i)}>X</Button>
+      <Col className="col-1 p-0">
+        <Button type="button" variant="outline-danger" className="btn removeBtn" onClick={() => removeEntry(i)}>X</Button>
+      </Col>
     </Row>
   ))
 
   if (count < props.capacity) {
     list.push(
-      <Row key='insertDropDown'>
+      <Row key='insertDropDown' className="col-12">
         <Col className="col-11">
-          <InputDropdown 
-            className="col-11" 
+          <InputDropdown
             items={props.items} 
             val="" 
             placeholder="Add..." 
@@ -62,7 +63,7 @@ const ModifiableInputList = (props) => {
   }
 
   return (
-    <Form.Group>
+    <Form.Group className="modifiableInputList">
       <Form.Label>{props.title} <span className={`capacityDisplayLabel ${count > props.capacity ? 'danger' : (count < props.capacity ? 'warn' : 'success')}`}>[{count}/{props.capacity}]</span></Form.Label>
       {list}
     </Form.Group>

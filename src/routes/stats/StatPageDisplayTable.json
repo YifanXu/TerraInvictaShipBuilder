@@ -13,7 +13,7 @@
       "cooling", 
       "sumCost", 
       "propellant",
-      "weightedBuildMaterials",
+      "totalBuildMaterials",
       "perTankPropellantMaterials"
     ],
     "columnDisplay": [
@@ -47,7 +47,7 @@
       "Cost of 1 tank of propellant"
     ],
     "costTransforms": {
-      "weightedBuildMaterials": 1,
+      "totalBuildMaterials": 1,
       "perTankPropellantMaterials": 10
     }
   },

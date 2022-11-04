@@ -37,7 +37,7 @@ const ModifiableInputList = (props) => {
       <Col className="col-11">
         <InputDropdown items={props.items} val={v} handler={(newV, newVBody) => setEntry(i, newV, newVBody)} filter={props.filter} filteralien={props.filteralien}/>
       </Col>
-      <Button className="btn btn-danger col-1" onClick={() => removeEntry(i)}>X</Button>
+      <Button type="button" variant="outline-danger" className="btn col-1" onClick={() => removeEntry(i)}>X</Button>
     </Row>
   ))
 

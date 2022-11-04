@@ -21,6 +21,7 @@ export default function loader () {
   Object.values(drives).forEach(drive => {
     drive.thrustRating = Math.round(constants.thrustRatingOutputScale * Math.log(drive.thrust_N * constants.thrustRatingInputScale) * 10) / 10
     drive.evRating = Math.round(constants.evRatingOutputScale * Math.log(drive.EV_kps * constants.evRatingInputScale) * 10) / 10
+    drive.totalBuildMaterials = drive.flatMass_tons ? scaleBuildCost(drive.weightedBuildMaterials, drive.flatMass_tons / 10) : {}
     drive.sumCost = drive.requiredProjectName ? techs[drive.requiredProjectName].sumCost : 0;
   })
 
@@ -69,7 +70,7 @@ export default function loader () {
     }
   })
 
-  
+
   Object.values(weapons).forEach(weapon => {
     weapon.sumCost = weapon.requiredProjectName ? techs[weapon.requiredProjectName].sumCost : 0;
     weapon.reloadMaterials = weapon.ammoMaterials ? scaleBuildCost(weapon.ammoMaterials, weapon.ammoMass_kg / 10000 * weapon.magazine) : {}

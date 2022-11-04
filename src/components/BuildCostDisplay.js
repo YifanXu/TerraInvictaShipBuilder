@@ -12,7 +12,7 @@ const resourceKey = {
 }
 
 const BuildCostDisplay = (props) => {
-  if (!props.data) return <p>-</p>
+  if (!props.data) return <p className="buildcost">-</p>
   let elements = []
   Object.entries(props.data).forEach(([resourceType, resourceQuantity]) => {
     if (!resourceQuantity) {
@@ -22,7 +22,7 @@ const BuildCostDisplay = (props) => {
     elements.push(<span className={`resourceSpan ${resourceType}`} key={resourceType}>{round(resourceQuantity)}{resourceKey[resourceType]}</span>)
   })
   return (
-    <p>{elements.length ? elements : '-'}</p>
+    <p className="buildcost">{elements.length ? elements : '-'}</p>
   )
 }
 

@@ -72,6 +72,11 @@ const router = createHashRouter(
           path: "stats/armor",
           element: <StatPage for="armor"/>,
           loader: dataLoader,
+        },
+        {
+          path: "stats/utility",
+          element: <StatPage for="utility"/>,
+          loader: dataLoader,
         }
       ]
     },

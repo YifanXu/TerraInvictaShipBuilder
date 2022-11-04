@@ -1,16 +1,13 @@
 import constants from './calculationConstants.json'
 import { calcSumCost } from './dataLoader'
+import { scaleBuildCost, addBuildCost } from '../components/BuildCostDisplay'
 
-function addEntryToDetailTable (table, source, unit, count) {
-  let total = unit * count
+function addEntryToDetailTable (table, source, unit, count, isMaterials = false) {
+  let total = isMaterials ? scaleBuildCost(unit, count) : unit * count
 
   if (table[source]) {
-    if (unit !== table[source].unit) {
-      throw new Error(`Incosistent Unit prices for ${source}!`)
-    }
-
     table[source].count += count
-    table[source].total += total
+    table[source].total = isMaterials ? addBuildCost(table[source].total, total) : table[source].total + total
   }
   else {
     table[source] = {
@@ -22,12 +19,6 @@ function addEntryToDetailTable (table, source, unit, count) {
   }
 
   return total
-}
-
-const addToCostTable = (baseCosts, newCosts) => {
-  for (const resourceType of baseCosts) {
-
-  }
 }
 
 const addToResearchTable = (table, list, techs) => {
@@ -189,9 +180,11 @@ export default function calculateStatistics (data, shipDesign) {
     result.validation.push(`Power required (${result.power.powerOutput} GW) exceeds maximum generated power (${result.power.maxGeneratedPower} GW) from ${loadout.powerPlant.friendlyName}`)
   }
 
-  // Mass
+  // Mass + Build
   let massTable = {}
+  let costTable = {}
   let massSum = 0
+  let buildSum = 0
 
   massSum += addEntryToDetailTable(massTable, loadout.hull.friendlyName, loadout.hull.mass_tons, 1)
   massSum += addEntryToDetailTable(massTable, loadout.drive.friendlyName, loadout.drive.flatMass_tons, loadout.driveCount)
@@ -200,27 +193,41 @@ export default function calculateStatistics (data, shipDesign) {
   massSum += addEntryToDetailTable(massTable, loadout.battery.friendlyName, loadout.battery.mass_tons, 1)
   massSum += addEntryToDetailTable(massTable, 'Crew', 4, crewSum)
 
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.hull.friendlyName, loadout.hull.totalBuildMaterials, 1, true))
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, "Propellant", scaleBuildCost(loadout.drive.perTankPropellantMaterials, 10), loadout.propellantCount, true))
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.powerPlant.friendlyName, loadout.powerPlant.weightedBuildMaterials, result.power.powerOutput, true))
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.radiator.friendlyName, loadout.radiator.materialPerGW, result.power.wasteHeat, true))
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.battery.friendlyName, loadout.battery.totalBuildMaterials, 1, true))
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, 'Crew', constants.crewBuildCost, crewSum, true))
+
   for (const w of loadout.noseWeapons) {
     massSum += addEntryToDetailTable(massTable, w.friendlyName, w.mass_tons, 1)
+    buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, w.friendlyName, w.totalBuildMaterials, 1, true))
   }
 
   for (const w of loadout.hullWeapons) {
     massSum += addEntryToDetailTable(massTable, w.friendlyName, w.mass_tons, 1)
+    buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, w.friendlyName, w.totalBuildMaterials, 1, true))
   }
 
   for (const util of loadout.utilitySlots) {
     massSum += addEntryToDetailTable(massTable, util.friendlyName, util.mass_tons, 1)
+    buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, util.friendlyName, util.totalBuildMaterials, 1, true))
   }
 
   // Armor
-  massSum += addEntryToDetailTable(massTable, `FRONT: ${loadout.frontArmor.friendlyName}`, Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m, loadout.frontArmorCount)
-  massSum += addEntryToDetailTable(massTable, `SIDE: ${loadout.sideArmor.friendlyName}`, Math.PI * 2 / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.length_m, loadout.sideArmorCount)
-  massSum += addEntryToDetailTable(massTable, `TAIL: ${loadout.tailArmor.friendlyName}`, Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m, loadout.tailArmorCount)
+  const frontArmorMass = addEntryToDetailTable(massTable, `FRONT: ${loadout.frontArmor.friendlyName}`, Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m, loadout.frontArmorCount)
+  const sideArmorMass = addEntryToDetailTable(massTable, `SIDE: ${loadout.sideArmor.friendlyName}`, Math.PI * 2 / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.length_m, loadout.sideArmorCount)
+  const tailArmorMass = addEntryToDetailTable(massTable, `TAIL: ${loadout.tailArmor.friendlyName}`, Math.PI / loadout.frontArmor.heatofVaporization_MJkg * loadout.hull.width_m * loadout.hull.width_m, loadout.tailArmorCount)
+  massSum += frontArmorMass + sideArmorMass + tailArmorMass
+
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, `FRONT: ${loadout.frontArmor.friendlyName}`, scaleBuildCost(loadout.frontArmor.weightedBuildMaterials, 0.1), frontArmorMass, true))
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, `SIDE: ${loadout.sideArmor.friendlyName}`, scaleBuildCost(loadout.sideArmor.weightedBuildMaterials, 0.1), sideArmorMass, true))
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, `TAIL: ${loadout.tailArmor.friendlyName}`, scaleBuildCost(loadout.tailArmor.weightedBuildMaterials, 0.1), tailArmorMass, true))
 
   result.general.dryMass = massSum;
   massSum += addEntryToDetailTable(massTable, 'Propellant', 100, loadout.propellantCount)
   result.general.wetMass = massSum;
-
 
   // Propulsion
   result.propulsion.finalThrust = result.propulsion.baseThrust * result.propulsion.thrustMultiplier
@@ -246,6 +253,7 @@ export default function calculateStatistics (data, shipDesign) {
   result.crewTable = Object.values(crewTable)
   result.massTable = Object.values(massTable)
   result.researchTable = Object.values(researchTable)
+  result.buildTable = Object.values(costTable)
 
   result.researchTable.push({
     source: 'Total',
@@ -266,6 +274,13 @@ export default function calculateStatistics (data, shipDesign) {
     unit: '',
     count: '',
     total: massSum
+  })
+
+  result.buildTable.push({
+    source: 'Total',
+    unit: {},
+    count: '',
+    total: buildSum
   })
 
   result.loadout = loadout

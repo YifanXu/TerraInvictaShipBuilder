@@ -3,3 +3,11 @@
   height: calc(100vh - 56px);
   padding: 5px;
 }
+
+.tickMark {
+  color: green;
+}
+
+.crossMark {
+  color: var(--bs-danger)
+}

@@ -16,6 +16,7 @@ function StatPage(props) {
   const [filter, setFilter] = useState('')
   const [showOffcanvas, setshowOffcanvas] = useState(false)
   const [canvasContent, setCanvasContent] = useState({})
+  const [showAlienParts, setShowAlienParts] = useState(false)
 
   const rowOnClick = (row) => {
     let flatObj = flattenObject(row)
@@ -24,7 +25,6 @@ function StatPage(props) {
   }
   
   const flattenObject = (obj, result = {}, prefix = '') => {
-    console.log(result)
     if (Array.isArray(obj)) {
       for (const i in obj) {
         flattenObject(obj[i], result, `${prefix}[${i}]`)
@@ -58,26 +58,32 @@ function StatPage(props) {
     return result
   }
 
-  const transformObject = statTypeBlock.costTransforms ? {...statTypeBlock.costTransforms} : undefined
+  let transformObject = statTypeBlock.costTransforms ? {...statTypeBlock.costTransforms} : undefined
 
   if (transformObject) {
     for (const [key, val] of Object.entries(transformObject)) {
       transformObject[key] = (entry) => <BuildCostDisplay data={scaleBuildCost(entry, val)}/>
     }
-  } 
+  }
+  if (statTypeBlock.booleanColumns) {
+    if (!transformObject) transformObject = {}
+    for (const col of statTypeBlock.booleanColumns) {
+      transformObject[col] = (entry) => entry ? <span className="tickMark">✓</span> : <span className="crossMark">X</span>
+    }
+  }
 
   return (
     <div className="Stat">
       <h4>{statTypeBlock.title}</h4>
       <Form.Label>Search</Form.Label> 
       <Form.Control type="text" className="filterInput" value={filter} onChange={e => setFilter(e.target.value.toLowerCase())}/>
-      <Form.Check type="switch" label="Show Alien Parts"/>
+      <Form.Check type="switch" label="Show Alien Parts" checked={showAlienParts} onChange={() => setShowAlienParts(!showAlienParts)}/>
       <hr/>
       <RSTable 
         tooltips={statTypeBlock.tooltips} 
         transform={transformObject}
         data={Object.values(data)}
-        filter={row => !filter || row.friendlyName.toLowerCase().includes(filter)} 
+        filter={row => (showAlienParts || row.sumCost !== -1) && (!filter || row.friendlyName.toLowerCase().includes(filter))} 
         columns={statTypeBlock.columns} 
         display={statTypeBlock.columnDisplay} 
         rowOnClick={rowOnClick.bind(this)}
@@ -91,7 +97,7 @@ function StatPage(props) {
           <Table>
             <tbody>
               {Object.entries(canvasContent).map(([key, val]) => (
-                <tr>
+                <tr key={key}>
                   <td>{key}</td>
                   <td>{val}</td>
                 </tr>

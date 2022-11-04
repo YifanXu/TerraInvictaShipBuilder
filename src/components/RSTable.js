@@ -16,7 +16,13 @@ const RSTable = props => {
   const body = data.map((dataRow, index) => (
     (props.filter && !props.filter(dataRow)) ? null : 
     <tr key={index} onClick={() => {if(props.rowOnClick) props.rowOnClick(dataRow)}}>
-      {columns.map(column => <td key={column} style={props.highlight ? props.highlight(dataRow, column) : {}}>{dataRow[column] === undefined ? "" : ((props.transform && props.transform[column] ?  props.transform[column](dataRow[column]) : typeof dataRow[column] === 'number' ? round(dataRow[column]) : dataRow[column]))}</td>)}
+      {
+        columns.map(column => 
+          <td key={column} style={props.highlight ? props.highlight(dataRow, column) : {}}>
+            {((props.transform && props.transform[column] ?  props.transform[column](dataRow[column]) : typeof dataRow[column] === 'number' ? round(dataRow[column]) : dataRow[column] === undefined ? "" : dataRow[column]))}
+          </td>
+        )
+      }
     </tr>
   ))
 

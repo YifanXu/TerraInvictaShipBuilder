@@ -72,7 +72,7 @@
       "Efficency",
       "General Use",
       "Research Cost", 
-      "Cost/Ton",
+      "Cost/GW",
       "Crew Count"
     ],
     "tooltips": [
@@ -83,7 +83,7 @@
       "Waste heat is porportional to (1-efficency)", 
       "Can be used by drives that require Any_General", 
       "Amount of research required for this power plant, including all pre-requisites", 
-      "Cost of 1 ton of the power plant",
+      "Cost to build the power plant per GW produced",
       "Number of crew needed"
     ],
     "costTransforms": {
@@ -121,7 +121,7 @@
       "vulnerability", 
       "specificMass_tonGW",
       "sumCost",
-      "weightedBuildMaterials",
+      "materialPerGW",
       "crew"
     ],
     "columnDisplay": [
@@ -129,19 +129,19 @@
       "Vulnerability", 
       "Specific Mass (ton/GW)",
       "Research Cost",
-      "Cost per ton",
-      "Crew per ton"
+      "Cost per GW",
+      "Crew"
     ],
     "tooltips": [
       "Name of radiator",
       "How vulnerable the radiator is when deployed in combat",
       "Mass of the radiator per GW of waste heat",
       "Cost of researching this radiator and all of its pre-requisites",
-      "Materials required per ton",
-      "Number of crew needed per ton"
+      "Materials required for radiators per GW of waste heat",
+      "Number of crew needed for the radiator. Does not scale with the amount of radiators needed"
     ],
     "costTransforms": {
-      "weightedBuildMaterials": 1
+      "materialPerGW": 1
     }
   },
   "hulls": {
@@ -153,6 +153,8 @@
       "hullHardpoints",
       "internalModules",
       "volume",
+      "width_m",
+      "length_m",
       "baseConstructionTime_days",
       "sumCost",
       "totalBuildMaterials",
@@ -165,7 +167,9 @@
       "Hull",
       "Utlity",
       "Volume (m3)",
-      "Construction Time",
+      "Width (m)",
+      "Length (m)",
+      "Construction (days)",
       "Research Cost",
       "Build Cost",
       "Crew Count"
@@ -177,6 +181,8 @@
       "Maximum of weapon hardpoints on the hull (red slots)",
       "Maximum of utility slots (blue slots)",
       "Volume (m3)",
+      "Width of the ship, affects armor cost for front and side armor",
+      "Length of the ship, affects armor cost for side armor",
       "Base construction time at a space dock",
       "Cost of researching this hull and all of its pre-requisites",
       "Cost of building the hull",
@@ -194,7 +200,7 @@
       "energyCapacity_GJ", 
       "rechargeRate_GJs",
       "sumCost",
-      "weightedBuildMaterials",
+      "totalBuildMaterials",
       "crew"
     ],
     "columnDisplay": [
@@ -216,7 +222,7 @@
       "Crew Count"
     ],
     "costTransforms": {
-      "weightedBuildMaterials": 1
+      "totalBuildMaterials": 1
     }
   },
   "weapons": {
@@ -228,7 +234,8 @@
       "slotCount", 
       "mass_tons",
       "sumCost",
-      "weightedBuildMaterials",
+      "totalBuildMaterials",
+      "reloadMaterials",
       "crew"
     ],
     "columnDisplay": [
@@ -239,6 +246,7 @@
       "Mass (tons)",
       "Research Cost",
       "Build Cost",
+      "Reload Cost",
       "Crew"
     ],
     "tooltips": [
@@ -248,11 +256,13 @@
       "How many slots the weapon take up", 
       "Mass of the weapon, including base weapon and all ammunition",
       "Research Cost",
-      "Build Cost",
+      "Build Cost of 1 weapon. Contains the cost of magazine",
+      "Cost to restock full magazine of ammo",
       "Total Crew count"
     ],
     "costTransforms": {
-      "weightedBuildMaterials": 1
+      "reloadMaterials": 1,
+      "totalBuildMaterials": 1
     }
   },
   "armor": {
@@ -279,7 +289,52 @@
       "Cost of building 1 ton of the armor"
     ],
     "costTransforms": {
-      "weightedBuildMaterials": 1
+      "weightedBuildMaterials": 0.1
+    }
+  },
+  "utility": {
+    "title": "Utility Modules",
+    "columns": [
+      "friendlyName",
+      "type",
+      "heatCapacity_GJ",
+      "requirement",
+      "laserPowerBonus_MW",
+      "thrustMultiplier",
+      "EVMultiplier",
+      "mass_tons",
+      "sumCost",
+      "weightedBuildMaterials",
+      "crew"
+    ],
+    "columnDisplay": [
+      "Name",
+      "Type",
+      "Heat Capacity (GJ)",
+      "Requirement",
+      "Laser Power (GW)",
+      "Thrust Multiplier",
+      "EV Multiplier",
+      "Mass",
+      "Research Cost",
+      "Build Cost",
+      "Crew"
+    ],
+    "tooltips": [
+      "Name",
+      "Whether the utility module is a heat sink or a regular utility module",
+      "Maximum amount of heat a heatsink can contain before overheating the ship",
+      "Requirement for the module to be installed",
+      "A flat laser power bonus provided by the module",
+      "Thrust Multiplier",
+      "Exhaust Velocity Multiplier",
+      "Mass of the module",
+      "Research Cost of the tech required and its pre-requisites",
+      "Cost of building the module",
+      "Crew"
+    ],
+    "costTransforms": {
+      "weightedBuildMaterials": 0.1
     }
   }
 }

@@ -7,5 +7,9 @@
   "thrustRatingOutputScale": 1.445,
   "evRatingInputScale": 0.9961,
   "evRatingOutputScale": 1.443,
-  "g": 9.81
+  "g": 9.81,
+  "crewBuildCost": {
+    "water": 0.2,
+    "volatiles": 0.2
+  }
 }

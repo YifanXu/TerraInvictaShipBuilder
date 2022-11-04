@@ -12,6 +12,7 @@ const resourceKey = {
 }
 
 const BuildCostDisplay = (props) => {
+  if (!props.data) return <p>-</p>
   let elements = []
   Object.entries(props.data).forEach(([resourceType, resourceQuantity]) => {
     if (!resourceQuantity) {
@@ -29,7 +30,7 @@ export default BuildCostDisplay
 
 export const scaleBuildCost = (buildcost, scalar) => {
   let res = {...buildcost}
-  for (const resourceType of Object.keys(res)) {
+  for (const resourceType of Object.keys(resourceKey)) {
     res[resourceType] = typeof res[resourceType] === 'number' ? res[resourceType] * scalar : 0
   }
   return res
@@ -37,8 +38,9 @@ export const scaleBuildCost = (buildcost, scalar) => {
 
 export const addBuildCost = (buildcostA, buildCostB) => {
   let res = {...buildcostA}
-  for (const resourceType of Object.keys(res)) {
-    res[resourceType] = res[resourceType] ? res[resourceType] + buildCostB[resourceType] : (buildCostB[resourceType] || 0)
+  for (const resourceType of Object.keys(resourceKey)) {
+    if (!res[resourceType]) res[resourceType] = 0
+    if (buildCostB[resourceType]) res[resourceType] += buildCostB[resourceType]
   }
   return res
 }

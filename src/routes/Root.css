@@ -14,3 +14,7 @@
 .navLink.brand:hover {
   color: var(--bs-navbar-brand-hover-color);
 }
+
+.App {
+  overflow-x: hidden
+}

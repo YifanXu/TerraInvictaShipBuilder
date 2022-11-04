@@ -34,6 +34,7 @@ function Root() {
                 <NavDropdown.Item as={Link} to="/stats/hulls">Hulls</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/stats/batteries">Batteries</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/stats/weapons">Weapons</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/stats/utility">Utility</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/stats/armor">Armor</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link as={Link} to="/optimizier" disabled>Drive Optimizer</Nav.Link>

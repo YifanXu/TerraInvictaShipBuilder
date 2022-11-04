@@ -5,6 +5,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import ListGroup from 'react-bootstrap/ListGroup'
 import PropellantGraph from "./PropellantGraph";
+import BuildCostDisplay from "./BuildCostDisplay";
 
 function ShipBuildDisplay (props) {
   return (
@@ -46,6 +47,18 @@ function ShipBuildDisplay (props) {
           <RSTable 
             data={props.data.researchTable} 
             filter={row => true} 
+            columns={['source', 'unit', 'count', 'total']} 
+            display={['Source', 'Unit', 'Count', 'Total']}
+          ></RSTable>
+        </Tab>
+        <Tab eventKey="build" title="Build">
+          <RSTable 
+            data={props.data.buildTable} 
+            filter={row => true}
+            transform={{
+              unit: c => <BuildCostDisplay data={c}/>,
+              total: c => <BuildCostDisplay data={c}/>
+            }}
             columns={['source', 'unit', 'count', 'total']} 
             display={['Source', 'Unit', 'Count', 'Total']}
           ></RSTable>

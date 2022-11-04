@@ -35,7 +35,7 @@ const ModifiableInputList = (props) => {
   const list = props.val.map((v, i) => (
     <Row key={i}>
       <Col className="col-11">
-        <InputDropdown items={props.items} val={v} handler={(newV, newVBody) => setEntry(i, newV, newVBody)} filteralien={props.filteralien}/>
+        <InputDropdown items={props.items} val={v} handler={(newV, newVBody) => setEntry(i, newV, newVBody)} filter={props.filter} filteralien={props.filteralien}/>
       </Col>
       <Button className="btn btn-danger col-1" onClick={() => removeEntry(i)}>X</Button>
     </Row>
@@ -54,6 +54,7 @@ const ModifiableInputList = (props) => {
             extraInfo={val => getCount(val)} 
             warnItem={val => getCount(val) > props.capacity - count} 
             filteralien={props.filteralien}
+            filter={props.filter}
           />
         </Col>
       </Row>

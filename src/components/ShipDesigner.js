@@ -127,6 +127,7 @@ function ShipDesigner(props) {
           items={props.data.weapons}
           handler={getAttributeHandler('noseWeapons')}
           showalien={showAlien ? 1 : 0}
+          filter={weeapon => weeapon.mountLocation === 'nose'}
         />
         <hr/>
         <ModifiableInputList
@@ -137,6 +138,7 @@ function ShipDesigner(props) {
           items={props.data.weapons}
           handler={getAttributeHandler('hullWeapons')}
           showalien={showAlien ? 1 : 0}
+          filter={weeapon => weeapon.mountLocation === 'hull'}
         />
         <hr/>
         <ModifiableInputList

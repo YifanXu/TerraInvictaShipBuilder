@@ -9,6 +9,25 @@ const InputDropdown = (props) => {
   const [filter, setFilter] = useState(null)
   let parentRef = React.createRef()
 
+  const generateDropdown = (items) => {
+    const allowedItems = []
+    const warnedItems = []
+    Object.entries(items).forEach(([item, itemVal]) => {
+      if (!filter || item.toLowerCase().includes(filter.toLowerCase()) && (!props.filter || props.filter(itemVal)) && (props.showalien || itemVal.sumCost !== -1)) {
+        const shouldWarn = props.warnItem && props.warnItem(itemVal)
+        const newItem = <ListGroup.Item key={item} onClick={() => itemOnSelect(item, itemVal)}><button className={shouldWarn ? 'danger' : 'normal'}>{item + (props.extraInfo ? ` (${props.extraInfo(item)})` : '')}</button></ListGroup.Item>
+        if (shouldWarn) {
+          warnedItems.push(newItem)
+        }
+        else {
+          allowedItems.push(newItem)
+        }
+      }
+    })
+
+    return allowedItems.concat(warnedItems)
+  }
+
   const focusHandler = e => {
     setShowDrop(true)
     setFilter('')
@@ -39,15 +58,12 @@ const InputDropdown = (props) => {
         onChange={e => setFilter(e.target.value)}
         disabled={props.disabled}
       />
-      <ListGroup style={{display: (showDrop ? 'block' : 'none')}}>
-        {
-          Object.entries(props.items).map(([item, itemVal]) => !itemVal ? null : (
-            (!filter || item.toLowerCase().includes(filter.toLowerCase())) && (!props.filter || props.filter(itemVal)) && (props.showalien || itemVal.sumCost !== -1)
-              ? <ListGroup.Item key={item} onClick={() => itemOnSelect(item, itemVal)}><button className={(props.warnItem && props.warnItem(itemVal)) ? 'danger' : 'normal'}>{item + (props.extraInfo ? ` (${props.extraInfo(item)})` : '')}</button></ListGroup.Item> 
-              : null
-          ))
-        }
-      </ListGroup>
+      {showDrop
+        ? <ListGroup>
+          {generateDropdown(props.items)}
+        </ListGroup> 
+        : null
+      }
     </div>
   )
 }

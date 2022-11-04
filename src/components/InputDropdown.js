@@ -13,7 +13,7 @@ const InputDropdown = (props) => {
     const allowedItems = []
     const warnedItems = []
     Object.entries(items).forEach(([item, itemVal]) => {
-      if (!filter || item.toLowerCase().includes(filter.toLowerCase()) && (!props.filter || props.filter(itemVal)) && (props.showalien || itemVal.sumCost !== -1)) {
+      if ((!filter || item.toLowerCase().includes(filter.toLowerCase())) && (!props.filter || props.filter(itemVal)) && (props.showalien || itemVal.sumCost !== -1)) {
         const shouldWarn = props.warnItem && props.warnItem(itemVal)
         const newItem = <ListGroup.Item key={item} onClick={() => itemOnSelect(item, itemVal)}><button className={shouldWarn ? 'danger' : 'normal'}>{item + (props.extraInfo ? ` (${props.extraInfo(item)})` : '')}</button></ListGroup.Item>
         if (shouldWarn) {
@@ -59,7 +59,7 @@ const InputDropdown = (props) => {
         disabled={props.disabled}
       />
       {showDrop
-        ? <ListGroup>
+        ? <ListGroup className="droplist">
           {generateDropdown(props.items)}
         </ListGroup> 
         : null

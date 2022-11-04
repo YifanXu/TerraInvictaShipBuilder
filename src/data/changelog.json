@@ -1,5 +1,20 @@
 [
   {
+    "title": "Experimental 0.2.0",
+    "date": "Novemeber 4, 2022",
+    "content": [
+      "Correctly modifies ship stat with utility module",
+      "Add utility module stat page",
+      "Add width and height paramters to hull stat page",
+      "Add build cost information to all relevant stat pages",
+      "Add research and build cost calculation to build sim",
+      "Add local save functionality and import/export",
+      "TODO: Auto optimization for ship drive/powerplants",
+      "TODO: Ship offensive weapon calculation",
+      "TODO: Homepage + Writeup on drives"
+    ]
+  },
+  {
     "title": "Experimental 0.1.0",
     "date": "October 28, 2022",
     "content": [

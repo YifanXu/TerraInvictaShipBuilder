@@ -2,7 +2,7 @@
   position: relative;
 }
 
-.list-group {
+.list-group.droplist {
   position: absolute;
   left: 0px;
   right: 0px;

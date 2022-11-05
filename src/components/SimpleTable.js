@@ -7,7 +7,7 @@ export default function SimpleTable (props) {
       <tbody>
         {Object.entries(props.data).map(([key, value]) => (
           <tr key={key}>
-            <td>{key}</td>
+            <td>{(props.keySubs && props.keySubs[key]) ? props.keySubs[key] : key}</td>
             <td>{(typeof value) === 'number' ? round(value) : value}</td>
           </tr>
         ))}

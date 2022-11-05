@@ -6,12 +6,13 @@ import Tabs from 'react-bootstrap/Tabs';
 import ListGroup from 'react-bootstrap/ListGroup'
 import PropellantGraph from "./PropellantGraph";
 import BuildCostDisplay from "./BuildCostDisplay";
+import keySubs from './ShipBuildDisplayNames.json'
 
 function ShipBuildDisplay (props) {
   return (
     <Tabs id="buildDisplayTab" activeKey={props.tab} onSelect={props.setTab}>
         <Tab eventKey="general" title="General">
-            <SimpleTable data={props.data.general}/>
+            <SimpleTable data={props.data.general} keySubs={keySubs}/>
             {
               props.data.validation.length > 0 ?
               <ListGroup as="ul" className="validation position-static">
@@ -22,10 +23,10 @@ function ShipBuildDisplay (props) {
             }
         </Tab>
         <Tab eventKey="power" title="Power">
-          <SimpleTable data={props.data.power}/>
+          <SimpleTable data={props.data.power} keySubs={keySubs}/>
         </Tab>
         <Tab eventKey="propulsion" title="Propulsion">
-          <SimpleTable data={props.data.propulsion}/>
+          <SimpleTable data={props.data.propulsion} keySubs={keySubs}/>
         </Tab>
         <Tab eventKey="mass" title="Mass">
           <RSTable 

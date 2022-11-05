@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom'
 
-import logo from '../data/websitelogo.png'
+import logo from '../data/images/websitelogo.png'
 
 function Root() {
   return (

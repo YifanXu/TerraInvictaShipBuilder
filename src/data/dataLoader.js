@@ -27,6 +27,7 @@ export default function loader () {
 
   Object.values(powerplants).forEach(plant => {
     plant.sumCost = plant.requiredProjectName ? techs[plant.requiredProjectName].sumCost : 0;
+    plant.materialPerGW = scaleBuildCost(plant.weightedBuildMaterials, plant.specificPower_tGW / 10)
   })
 
   Object.values(radiators).forEach(rad => {

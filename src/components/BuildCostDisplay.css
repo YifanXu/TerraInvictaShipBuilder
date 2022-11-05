@@ -1,4 +1,4 @@
-.resourceSpan.water {
+/* .resourceSpan.water {
   color: darkblue
 }
 
@@ -24,8 +24,18 @@
 
 .resourceSpan.exotics {
   color: purple
-}
+} */
 
 .buildcost {
   margin-bottom: 0px;
+}
+
+.resourceIcon {
+  vertical-align: middle;
+  height: 15px;
+}
+
+.resourceSpan {
+  line-height: 30px;
+  display: inline-block;
 }

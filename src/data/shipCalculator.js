@@ -196,7 +196,7 @@ export default function calculateStatistics (data, shipDesign) {
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.hull.friendlyName, loadout.hull.totalBuildMaterials, 1, true))
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.drive.friendlyName, loadout.drive.totalBuildMaterials, 1, true))
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, "Propellant", scaleBuildCost(loadout.drive.perTankPropellantMaterials, 10), loadout.propellantCount, true))
-  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.powerPlant.friendlyName, loadout.powerPlant.weightedBuildMaterials, result.power.powerOutput, true))
+  buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.powerPlant.friendlyName, loadout.powerPlant.materialPerGW, result.power.powerOutput, true))
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.radiator.friendlyName, loadout.radiator.materialPerGW, result.power.wasteHeat, true))
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.battery.friendlyName, loadout.battery.totalBuildMaterials, 1, true))
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, 'Crew', constants.crewBuildCost, crewSum, true))

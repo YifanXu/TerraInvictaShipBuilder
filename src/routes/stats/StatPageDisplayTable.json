@@ -61,7 +61,7 @@
       "efficiency",
       "generalUse",
       "sumCost",
-      "weightedBuildMaterials", 
+      "materialPerGW", 
       "crew"
     ],
     "columnDisplay": [
@@ -87,8 +87,11 @@
       "Number of crew needed"
     ],
     "costTransforms": {
-      "weightedBuildMaterials": 1
-    }
+      "materialPerGW": 1
+    },
+    "booleanColumns": [
+      "generalUse"
+    ]
   },
   "techs": {
     "title": "Technologies",

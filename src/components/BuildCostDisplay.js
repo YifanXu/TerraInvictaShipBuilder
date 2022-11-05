@@ -1,14 +1,22 @@
 import "./BuildCostDisplay.css"
 import round from '../data/round'
 
+import waterIcon from '../data/images/ICO_water.png'
+import volatileIcon from '../data/images/ICO_volatiles.png'
+import metalIcon from '../data/images/ICO_metal.png'
+import nobleIcon from '../data/images/ICO_metal_noble.png'
+import fissileIcon from '../data/images/ICO_fissile.png'
+import antimatterIcon from '../data/images/ICO_antimatter.png'
+import exoticIcon from '../data/images/ICO_exotics.png'
+
 const resourceKey = {
-  "water": "W",
-  "volatiles": "V",
-  "metals": "M",
-  "nobleMetals": "N",
-  "fissiles": "F",
-  "antimatter": "A",
-  "exotics": "E"
+  "water": waterIcon,
+  "volatiles": volatileIcon,
+  "metals": metalIcon,
+  "nobleMetals": nobleIcon,
+  "fissiles": fissileIcon,
+  "antimatter": antimatterIcon,
+  "exotics": exoticIcon
 }
 
 const BuildCostDisplay = (props) => {
@@ -18,8 +26,8 @@ const BuildCostDisplay = (props) => {
     if (!resourceQuantity) {
       return
     }
-    if (elements.length > 0) elements.push(<span key={'div'+resourceType}>/</span>)
-    elements.push(<span className={`resourceSpan ${resourceType}`} key={resourceType}>{round(resourceQuantity)}{resourceKey[resourceType]}</span>)
+    if (elements.length > 0) elements.push(<span key={'div'+resourceType}> </span>)
+    elements.push(<span className={`resourceSpan ${resourceType}`} key={resourceType}><img className="resourceIcon" alt={resourceKey} src={resourceKey[resourceType]}/>{round(resourceQuantity)}</span>)
   })
   return (
     <p className="buildcost">{elements.length ? elements : '-'}</p>

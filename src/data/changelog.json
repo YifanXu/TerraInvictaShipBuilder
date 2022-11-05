@@ -1,13 +1,18 @@
 [
   {
+    "title": "Experimental 0.2.2",
+    "date": "Novemeber 4, 2022",
+    "content": [
+      "Fix build cost calculation for power plants",
+      "Move build cost display to use symbols instead of letters"
+    ]
+  },
+  {
     "title": "Experimental 0.2.1",
     "date": "Novemeber 4, 2022",
     "content": [
       "Validate ship hull weapons (e.g. Monitors cannot fit heavy weapons because it has two 2x1 hull slots)",
-      "Fix weapon slot count not showing up correctly",
-      "TODO: Auto optimization for ship drive/powerplants",
-      "TODO: Ship offensive weapon calculation",
-      "TODO: Homepage + Writeup on drives"
+      "Fix weapon slot count not showing up correctly"
     ]
   },
   {

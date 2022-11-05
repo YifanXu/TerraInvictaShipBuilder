@@ -1,31 +1,3 @@
-/* .resourceSpan.water {
-  color: darkblue
-}
-
-.resourceSpan.volatiles {
-  color:orangered
-}
-
-.resourceSpan.metals {
-  color: gray
-}
-
-.resourceSpan.nobleMetals {
-  color :darkgoldenrod
-}
-
-.resourceSpan.fissiles {
-  color: darkgreen
-}
-
-.resourceSpan.antimatter {
-  color: black
-}
-
-.resourceSpan.exotics {
-  color: purple
-} */
-
 .buildcost {
   margin-bottom: 0px;
 }
@@ -37,5 +9,5 @@
 
 .resourceSpan {
   line-height: 30px;
-  display: inline-block;
+  display: inline-block ;
 }

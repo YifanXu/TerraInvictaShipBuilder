@@ -4,6 +4,7 @@
   "cruiseAccel": "Cruise Acceleration (milligee)",
   "combatAccel": "Combat Acceleration (milligee)",
   "cruiseDV": "Cruise Delta-V (kps)",
+  "turnRate": "Turn Rate (deg/sec^2)",
   "heatsinkCap": "Heat Sink Capacity (GJ)",
   "batteryCap": "Battery Capacity (GJ)",
   "constructionTime": "Base Construction Time (days)",

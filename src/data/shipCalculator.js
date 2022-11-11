@@ -65,9 +65,11 @@ export default function calculateStatistics (data, shipDesign) {
     general: {
       dryMass: 0,
       wetMass: 0,
+      crew: 0,
       cruiseAccel: 0,
       combatAccel: 0,
       cruiseDV: 0,
+      turnRate: 0,
       heatsinkCap: 0,
       batteryCap: loadout.battery.energyCapacity_GJ,
       constructionTime: loadout.hull.baseConstructionTime_days,
@@ -146,10 +148,10 @@ export default function calculateStatistics (data, shipDesign) {
       if (util.requiresHydrogenPropellant && loadout.drive.propellant !== 'Hydrogen') {
         result.validation.push(`${util.friendlyName} requires hydrogen propellant, but your drive uses ${loadout.drive.propellant}.`)
       }
-      if (util.requiresNuclearDrive && !loadout.drive.driveClassification.includes("Fission")) {
+      if (util.requiresNuclearDrive && !util.requiresFusionDrive && !loadout.drive.driveClassification.includes("Fission")) {
         result.validation.push(`${util.friendlyName} requires nuclear drive, but your drive is classified as "${loadout.drive.driveClassification}".`)
       }
-      else if (util.requiresFusionDrive && !loadout.drive.driveClassification.includes("Fusion")) {
+      else if (util.requiresFusionDrive && !util.requiresNuclearDrive && !loadout.drive.driveClassification.includes("Fusion")) {
         result.validation.push(`${util.friendlyName} requires nuclear drive, but your drive is classified as "${loadout.drive.driveClassification}".`)
       }
 
@@ -191,7 +193,7 @@ export default function calculateStatistics (data, shipDesign) {
   massSum += addEntryToDetailTable(massTable, loadout.powerPlant.friendlyName, loadout.powerPlant.specificPower_tGW, result.power.powerOutput)
   massSum += addEntryToDetailTable(massTable, loadout.radiator.friendlyName, loadout.radiator.specificMass_tonGW, result.power.wasteHeat)
   massSum += addEntryToDetailTable(massTable, loadout.battery.friendlyName, loadout.battery.mass_tons, 1)
-  massSum += addEntryToDetailTable(massTable, 'Crew', 4, crewSum)
+  massSum += addEntryToDetailTable(massTable, 'Crew', constants.crewMass, crewSum)
 
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.hull.friendlyName, loadout.hull.totalBuildMaterials, 1, true))
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.drive.friendlyName, loadout.drive.totalBuildMaterials, 1, true))
@@ -244,6 +246,11 @@ export default function calculateStatistics (data, shipDesign) {
       result.validation.push(validator.rule)
     }
   }
+
+  // Just check for nose hardpoint violations (4 nose hardpoint cannot accomodate a 2+2 setup)
+  if (loadout.hull.noseHardpoints === 4 && loadout.noseWeapons.length === 2 && loadout.noseWeapons[0].slotCount === 2 && loadout.noseWeapons[1].slotCount === 2) {
+    result.validation.push("Cannot fit two 2-slot nose weapons onto a 4-slot nose hardpoint configuration")
+  }
   
 
   for (const util of loadout.utilitySlots) {
@@ -278,6 +285,7 @@ export default function calculateStatistics (data, shipDesign) {
   result.general.cruiseAccel = result.propulsion.cruiseAccel
   result.general.combatAccel = result.propulsion.combatAccel
   result.general.cruiseDV = result.propulsion.cruiseDV
+  result.general.turnRate = loadout.hull.momentConstant / result.general.wetMass
 
   // Research
   let researchTable = {}

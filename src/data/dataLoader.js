@@ -39,6 +39,8 @@ export default function loader () {
   Object.values(hulls).forEach(hull => {
     hull.sumCost = hull.requiredProjectName ? techs[hull.requiredProjectName].sumCost : 0;
     hull.totalBuildMaterials = scaleBuildCost(hull.weightedBuildMaterials, hull.mass_tons / 10)
+    hull.momentConstant = constants.turnRateConstant / hull.length_m
+    hull.baseTurnRate = hull.momentConstant / (hull.mass_tons + hull.crew * constants.crewMass)
   })
   
   Object.values(batteries).forEach(bat => {
@@ -59,10 +61,10 @@ export default function loader () {
       if (a.requiresHydrogenPropellant) {
         a.requirement = "Hydrogren Propellant"
       }
-      else if (a.requiresNuclearDrive) {
+      else if (a.requiresNuclearDrive && !a.requiresFusionDrive) {
         a.requirement = "Fission Drive"
       }
-      else if (a.requiresFusionDrive) {
+      else if (a.requiresFusionDrive && !a.requiresNuclearDrive) {
         a.requirement = "Fusion Drive"
       }
     }

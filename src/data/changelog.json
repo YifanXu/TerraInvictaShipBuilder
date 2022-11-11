@@ -1,5 +1,13 @@
 [
   {
+    "title": "Experimental 0.2.3",
+    "date": "Novemeber 11, 2022",
+    "content": [
+      "Add turn rate calculation to hull stats and build sim",
+      "Fix antimatter spiker so it reflects its current state in game (as of 0.3.35)"
+    ]
+  },
+  {
     "title": "Experimental 0.2.2",
     "date": "Novemeber 4, 2022",
     "content": [

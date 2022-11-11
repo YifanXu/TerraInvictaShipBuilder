@@ -7,7 +7,9 @@
   "thrustRatingOutputScale": 1.445,
   "evRatingInputScale": 0.9961,
   "evRatingOutputScale": 1.443,
+  "turnRateConstant": 2406280,
   "g": 9.81,
+  "crewMass": 4,
   "crewBuildCost": {
     "water": 0.2,
     "volatiles": 0.2

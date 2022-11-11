@@ -12,6 +12,7 @@ import Home from './routes/Home'
 import BuildSim from "./routes/BuildSim";
 import StatPage from './routes/stats/StatPage'
 import About from "./routes/About";
+import Optimizer from './routes/Optimizer'
 
 const router = createHashRouter(
   [
@@ -31,6 +32,11 @@ const router = createHashRouter(
         {
           path: "about",
           element: <About/>,
+          loader: dataLoader,
+        },
+        {
+          path: "optimizer",
+          element: <Optimizer/>,
           loader: dataLoader,
         },
         {

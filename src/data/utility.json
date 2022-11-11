@@ -546,7 +546,7 @@
     "EVMultiplier": 1,
     "requiresHydrogenPropellant": null,
     "requiresNuclearDrive": true,
-    "requiresFusionDrive": null,
+    "requiresFusionDrive": true,
     "weightedBuildMaterials": {
       "water": 0.1,
       "volatiles": 0.2,

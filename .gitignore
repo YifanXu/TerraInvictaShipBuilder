@@ -8,8 +8,7 @@
 # testing
 /coverage
 
-# Include production (this is the deployment branch duh)
-# /build 
+/build 
 
 ## Do not include non-production
 /public

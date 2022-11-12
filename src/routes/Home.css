@@ -1,0 +1,29 @@
+.home {
+  padding: 5px;
+}
+
+.title {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.homeContent {
+  height: fit-content;
+}
+.homeContent > div {
+  background-color: azure;
+}
+
+.leftpane {
+  background-color: azure;
+}
+
+.resourceList > div {
+  padding: 5px;
+}
+
+.quote {
+  background-color: lightgray;
+  margin: 0px 30px;
+  padding: 5px;
+}

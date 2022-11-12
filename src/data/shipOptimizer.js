@@ -12,7 +12,7 @@ const defaultFuelEval = {
 }
 
 // How much fuel does it take to reach set drive/
-export function CompareByFuel (drive, powerplant, targetCruiseAccel, targetKps, baseMass) {
+function compareByFuel (drive, driveCount, powerplant, targetCruiseAccel, targetKps, baseMass) {
   // How many engines?
   
 }

@@ -1,5 +1,14 @@
 [
   {
+    "title": "Experimental 0.2.4",
+    "date": "Novemeber 11, 2022",
+    "content": [
+      "Add shoddy homepage",
+      "Adjust save/load contols in builsim so it displays on a new line on smaller devices",
+      "Add footer to bottom of page"
+    ]
+  },
+  {
     "title": "Experimental 0.2.3",
     "date": "Novemeber 11, 2022",
     "content": [

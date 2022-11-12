@@ -141,10 +141,10 @@ function BuildSim() {
       }
       <Row>
         <Form.Label className="col-1">Ship</Form.Label>
-        <Col className="col-7">
+        <Col className="col-12 col-sm-7">
           <InputDropdown items={storedShips} val={currentShip.name || "Unsaved" } handler={v => updateShipHandler({...storedShips[v]})}/> 
         </Col>
-        <ButtonGroup className="col-3">
+        <ButtonGroup className="col-12 col-sm-3">
           <Button className="btn btn-secondary col-6" onClick={openImportModal}>Import</Button>
           <Button className="btn btn-secondary col-6" onClick={exportShip}>Export</Button>
           <Button className="btn btn-secondary col-6" onClick={openManageModel}>Save</Button>

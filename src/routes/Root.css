@@ -18,3 +18,19 @@
 .App {
   overflow-x: hidden
 }
+
+.footer {
+  margin: 20px;
+}
+
+.footer > p {
+  text-align: center;
+  font-size: small;
+  margin-bottom: 0.5em;
+  color: rgb(107, 107, 107);
+  text-decoration: underline;
+}
+
+.mainContent > div {
+  height: fit-content;
+}

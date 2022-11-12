@@ -2,7 +2,19 @@
   padding: 5px;
 }
 
+.headingParagraphs > p {
+  margin-bottom: 0.5em;
+}
+
 .changelog {
   height: fit-content;
   overflow-y: visible;
+}
+
+.changelog>div {
+  transition-duration: 200ms;
+}
+
+.changelog>div:hover {
+  background-color: rgb(238, 238, 238);
 }

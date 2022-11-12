@@ -37,8 +37,8 @@ function Root() {
                 <NavDropdown.Item as={Link} to="/stats/utility">Utility</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/stats/armor">Armor</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link as={Link} to="/optimizer" disabled>Drive Optimizer</Nav.Link>
-              <Nav.Link as={Link} to="/buildsim">Build Sim</Nav.Link>
+              <Nav.Link as={Link} to="/optimizer" disabled>Drive Comparison</Nav.Link>
+              <Nav.Link as={Link} to="/buildsim">Shipbuilder</Nav.Link>
               <Nav.Link as={Link} to="/about">About</Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -46,6 +46,11 @@ function Root() {
       </Navbar>
       <div className='mainContent'>
         <Outlet/>
+      </div>
+      <hr/>
+      <div className='footer'>
+        <p>Terra Invicta ShipBuilder is not affiliated with Pavonis Interactive or Hooded Horse.</p>
+        <p>Terra Invicta, game content and any reference material are copyrights of Pavonis Interactive.</p>
       </div>
     </div>
   );

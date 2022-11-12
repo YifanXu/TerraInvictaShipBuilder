@@ -1,5 +1,12 @@
 [
   {
+    "title": "Experimental 0.2.5",
+    "date": "Novemeber 11, 2022",
+    "content": [
+      "Add armor density and facing volumes"
+    ]
+  },
+  {
     "title": "Experimental 0.2.4",
     "date": "Novemeber 11, 2022",
     "content": [

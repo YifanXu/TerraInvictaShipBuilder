@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/TerraInvictaShipBuilder/static/css/main.47f3407d.css",
-    "main.js": "/TerraInvictaShipBuilder/static/js/main.d110aed8.js",
+    "main.css": "/TerraInvictaShipBuilder/static/css/main.39506d28.css",
+    "main.js": "/TerraInvictaShipBuilder/static/js/main.28b525fd.js",
     "static/media/websitelogo.png": "/TerraInvictaShipBuilder/static/media/websitelogo.a345058c71e50fbef357.png",
     "index.html": "/TerraInvictaShipBuilder/index.html",
-    "main.47f3407d.css.map": "/TerraInvictaShipBuilder/static/css/main.47f3407d.css.map",
-    "main.d110aed8.js.map": "/TerraInvictaShipBuilder/static/js/main.d110aed8.js.map"
+    "main.39506d28.css.map": "/TerraInvictaShipBuilder/static/css/main.39506d28.css.map",
+    "main.28b525fd.js.map": "/TerraInvictaShipBuilder/static/js/main.28b525fd.js.map"
   },
   "entrypoints": [
-    "static/css/main.47f3407d.css",
-    "static/js/main.d110aed8.js"
+    "static/css/main.39506d28.css",
+    "static/js/main.28b525fd.js"
   ]
 }

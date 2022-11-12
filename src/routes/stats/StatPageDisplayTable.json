@@ -276,13 +276,15 @@
     "columns": [
       "friendlyName",
       "heatofVaporization_MJkg",
+      "density_kgm3",
       "specialty",
       "sumCost",
       "weightedBuildMaterials"
     ],
     "columnDisplay": [
       "Name",
-      "Armor Capacity",
+      "Armor Capacity (MJ/kg)",
+      "Density (kg/m^3)",
       "Specialty",
       "Research Cost",
       "Cost per ton"
@@ -290,6 +292,7 @@
     "tooltips": [
       "Name of the armor",
       "Damage that 1 kg of the armor can absorb. The higher this value, the lighter each point of armor",
+      "Density of the armor material",
       "Bonus resistance that the armor offers",
       "Research Cost of the tech required and its pre-requisites",
       "Cost of building 1 ton of the armor"

@@ -73,6 +73,9 @@ export default function calculateStatistics (data, shipDesign) {
       heatsinkCap: 0,
       batteryCap: loadout.battery.energyCapacity_GJ,
       constructionTime: loadout.hull.baseConstructionTime_days,
+      frontArmorVolume: 0,
+      sideArmorVolume: 0,
+      tailArmorVolume: 0,
     },
     propulsion: {
       baseThrust: loadout.drive.thrust_N * loadout.driveCount,
@@ -268,6 +271,10 @@ export default function calculateStatistics (data, shipDesign) {
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, `SIDE: ${loadout.sideArmor.friendlyName}`, scaleBuildCost(loadout.sideArmor.weightedBuildMaterials, 0.1), sideArmorMass, true))
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, `TAIL: ${loadout.tailArmor.friendlyName}`, scaleBuildCost(loadout.tailArmor.weightedBuildMaterials, 0.1), tailArmorMass, true))
 
+  result.general.frontArmorVolume = frontArmorMass / loadout.frontArmor.density_kgm3 * 1000
+  result.general.sideArmorVolume = sideArmorMass / loadout.sideArmor.density_kgm3 * 1000
+  result.general.tailArmorVolume = tailArmorMass / loadout.tailArmor.density_kgm3 * 1000
+
   result.general.dryMass = massSum;
   massSum += addEntryToDetailTable(massTable, 'Propellant', 100, loadout.propellantCount)
   result.general.wetMass = massSum;
@@ -292,7 +299,7 @@ export default function calculateStatistics (data, shipDesign) {
   let projectsRequired = addToResearchTable(researchTable, Object.values(loadout), [])
   const totalSumCost = calcSumCost(projectsRequired)
 
-  // Finishing Up
+  // Assign table to result object, and add sum row to each table
 
   result.crewTable = Object.values(crewTable)
   result.massTable = Object.values(massTable)

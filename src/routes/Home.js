@@ -12,6 +12,7 @@ function Home() {
           <p>Welcome to Terra Invicta Shipbuilder!</p>
           <p>Navigate to different parts of this resource via the nav on top of the page.</p>
           <p>This resource lets you try building ships out of game with all modules unlocked, helping you decide for yourself what technologies you should prioritize.</p>
+          <p>The shipbuilder provides stats shown in game (except for combat power, which is pretty useless anyways) to a very high degree of accuracy and provides a better breakdown on mass, crew, and build costs. It also provides an aggregated research cost on every ship module, as well as an entire ship design. A graph is also included to help decide how much propellant to take.</p>
           <p>This tool was originally designed to primarily evaluate drives, power plants, and radiators, and offensive calculations for ships are not avaliable at the moment.</p>
         </Col>
         <Col className="col-12 col-md-6">

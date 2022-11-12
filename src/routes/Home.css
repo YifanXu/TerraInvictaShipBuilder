@@ -23,7 +23,9 @@
 }
 
 .quote {
-  background-color: lightgray;
-  margin: 0px 30px;
+  background-color: rgb(235, 235, 235);
+  border: 2px dotted gray;
+  margin: 30px 30px;
   padding: 5px;
+  border-radius: 5px;
 }

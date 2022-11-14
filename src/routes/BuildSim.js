@@ -59,6 +59,7 @@ function BuildSim() {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const [alertText, setAlertText] = useState("")
+  const [importNotification, setImportNotification] = useState("")
   const [importText, setImportText] = useState("")
   const [shipNameText, setShipNameText] = useState("")
 
@@ -125,8 +126,22 @@ function BuildSim() {
       importResult = JSON.parse(importText)
     }
     catch (e) {
+      console.log(e)
+      setImportNotification(typeof e === 'string' ? e : e.message)
+      return
+    }
+    if (!importResult) {
+      console.log(importResult)
+      setImportNotification("JSON object is not valid")
+    }
+    
+    // Validate ship
+    for (const [keyName, keyVal] of defaultShip) {
       
     }
+
+    console.log(importResult)
+    return
     updateShipHandler(importResult)
     setShowImportModal(false)
   }
@@ -167,6 +182,7 @@ function BuildSim() {
         <Modal.Body>
           <Form.Label>Paste text here...</Form.Label>
           <Form.Control as="textarea" rows={15} val={importText} onChange={e => setImportText(e.target.value)}/>
+          <Form.Text className="text-danger">{importNotification}</Form.Text>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowImportModal(false)}>

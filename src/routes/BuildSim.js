@@ -2,7 +2,7 @@ import "./BuildSim.css"
 
 import ShipDesigner from "../components/ShipDesigner";
 import ShipBuildDisplay from "../components/ShipBuildDisplay";
-import calcShipStats from "../data/shipCalculator"
+import calcShipStats, { translateToLoadout } from "../data/shipCalculator"
 import { useLoaderData } from 'react-router-dom'
 import { useState } from 'react'
 import Col from 'react-bootstrap/Col'
@@ -72,6 +72,7 @@ function BuildSim() {
   const openImportModal = () => {
     setShowImportModal(true)
     setImportText("")
+    setImportNotification("")
   }
 
   const openManageModel = () => {
@@ -136,14 +137,37 @@ function BuildSim() {
     }
     
     // Validate ship
-    for (const [keyName, keyVal] of defaultShip) {
-      
+    for (const [keyName, keyVal] of Object.entries(defaultShip)) {
+      if (importResult[keyName] === undefined) {
+        // An entry is missing
+        setImportNotification(`Ship JSON is missing property "${keyName}"`)
+        return
+      }
+    }
+
+    let prelim = translateToLoadout(data, importResult)
+
+    for (const [keyName, keyVal] of Object.entries(prelim)) {
+      if (importResult[keyName] === undefined) {
+        // An entry is missing
+        setImportNotification(`Ship JSON is has invalid property "${keyName}": ${keyVal}`)
+        return
+      }
+      if (Array.isArray(keyVal)) {
+        for (const index in keyVal) {
+          if (!keyVal[index]) {
+            setImportNotification(`Ship JSON is has invalid entry for "${keyName}": ${importResult[keyName][index]}`)
+            return
+          }
+        }
+      }
     }
 
     console.log(importResult)
-    return
+    console.log(prelim)
     updateShipHandler(importResult)
     setShowImportModal(false)
+    return
   }
   
   return (

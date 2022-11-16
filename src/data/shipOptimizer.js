@@ -14,5 +14,6 @@ const defaultFuelEval = {
 // How much fuel does it take to reach set drive/
 function compareByFuel (drive, driveCount, powerplant, targetCruiseAccel, targetKps, baseMass) {
   // How many engines?
-  
+  let thrust = drive.thrust_N * driveCount
+  let maxTonnage = thrust / targetCruiseAccel
 }

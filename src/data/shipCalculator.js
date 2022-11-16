@@ -40,8 +40,8 @@ const addToResearchTable = (table, list, techs) => {
   return techs
 }
 
-export default function calculateStatistics (data, shipDesign) {
-  const loadout = {
+export function translateToLoadout (data, shipDesign) {
+  return {
     hull: data.hulls[shipDesign.hull],
     drive: data.drives[shipDesign.drive],
     driveCount: shipDesign.driveCount,
@@ -59,6 +59,10 @@ export default function calculateStatistics (data, shipDesign) {
     sideArmorCount: shipDesign.sideArmorCount,
     tailArmorCount: shipDesign.tailArmorCount,
   }
+}
+
+export default function calculateStatistics (data, shipDesign) {
+  const loadout = translateToLoadout(data, shipDesign)
 
   // Copied values
   let result = {
@@ -206,9 +210,15 @@ export default function calculateStatistics (data, shipDesign) {
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, loadout.battery.friendlyName, loadout.battery.totalBuildMaterials, 1, true))
   buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, 'Crew', constants.crewBuildCost, crewSum, true))
 
+  let totalNoseHardpoints = 0
   for (const w of loadout.noseWeapons) {
     massSum += addEntryToDetailTable(massTable, w.friendlyName, w.mass_tons, 1)
     buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, w.friendlyName, w.totalBuildMaterials, 1, true))
+    totalNoseHardpoints += w.slotCount
+  }
+
+  if (totalNoseHardpoints > loadout.hull.noseHardpoints) {
+    result.validation.push(`${totalNoseHardpoints} assigned nose hardpoints exceeded the allowed ${loadout.hull.noseHardpoints} for ${loadout.hull.friendlyName}`)
   }
 
   const hullValidators = data.hullValidators[loadout.hull.friendlyName]
@@ -217,10 +227,12 @@ export default function calculateStatistics (data, shipDesign) {
     standard: 0,
     heavy: 0
   }
+  let totalHullHardpoints = 0
   for (const w of loadout.hullWeapons) {
     massSum += addEntryToDetailTable(massTable, w.friendlyName, w.mass_tons, 1)
     buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, w.friendlyName, w.totalBuildMaterials, 1, true))
 
+    totalHullHardpoints += w.slotCount
     switch (w.slotCount) {
       case 1:
         currentHullCounts.light++
@@ -233,6 +245,10 @@ export default function calculateStatistics (data, shipDesign) {
         break;
       default:
     }
+  }
+
+  if (totalHullHardpoints > loadout.hull.hullHardpoints) {
+    result.validation.push(`${totalHullHardpoints} assigned hull hardpoints exceeded the alloted ${loadout.hull.hullHardpoints} for ${loadout.hull.friendlyName}`)
   }
 
   for (const validator of hullValidators) {
@@ -255,10 +271,13 @@ export default function calculateStatistics (data, shipDesign) {
     result.validation.push("Cannot fit two 2-slot nose weapons onto a 4-slot nose hardpoint configuration")
   }
   
-
   for (const util of loadout.utilitySlots) {
     massSum += addEntryToDetailTable(massTable, util.friendlyName, util.mass_tons, 1)
     buildSum = addBuildCost(buildSum, addEntryToDetailTable(costTable, util.friendlyName, util.totalBuildMaterials, 1, true))
+  }
+
+  if (loadout.utilitySlots.length > loadout.hull.internalModules) {
+    result.validation.push(`${loadout.utilitySlots.length} assigned utility slots exceeded the alloted ${loadout.hull.internalModules} for ${loadout.hull.friendlyName}`)
   }
 
   // Armor

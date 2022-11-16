@@ -1,5 +1,14 @@
 [
   {
+    "title": "Experimental 0.2.6",
+    "date": "Novemeber 16, 2022",
+    "content": [
+      "Integer values for shipbuilder (such as propellant count) will reject invalid values",
+      "Invalid import JSONs are rejected and no longer crash the website",
+      "Exceeding slot count for nose, hull, or utility slots will now properly show up in validation."
+    ]
+  },
+  {
     "title": "Experimental 0.2.5",
     "date": "Novemeber 11, 2022",
     "content": [

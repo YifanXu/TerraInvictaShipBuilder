@@ -21,7 +21,7 @@ function Root() {
               height="30"
               className="d-inline-block align-top"
             />{' '}
-            <NavLink className="navLink brand" as={Link} to="/">Terra Invicta Ship6builder</NavLink>
+            <NavLink className="navLink brand" as={Link} to="/">Terra Invicta Shipbuilder</NavLink>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
